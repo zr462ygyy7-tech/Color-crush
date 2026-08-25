@@ -1,348 +1,200 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#0b1024">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a1028">
 <title>Alma Crush</title>
 <style>
-:root{
-  --bg:#080d20;--bg2:#111936;--card:#151e3d;--card2:#1b2649;
-  --text:#f8f9ff;--muted:#aeb8d8;--purple:#7c4dff;--purple2:#5d36e8;
-  --green:#2ed47a;--red:#ff4f6d;--gold:#ffd447;--cyan:#2fc9e8;
-  --shadow:0 18px 50px rgba(0,0,0,.35)
-}
+:root{--bg:#080e22;--card:#121b39;--card2:#182347;--text:#f7f8ff;--muted:#aeb8d6;--purple:#7c4dff;--purple2:#a65cff;--good:#31d78b;--danger:#ff4d67;--gold:#ffd34d}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% -10%,#26366f 0,#101a3b 34%,var(--bg) 75%);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% 0,#1b2b61 0,#0a1028 48%,#060b1b 100%);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text)}
 body{display:flex;justify-content:center}
 button{font:inherit;color:inherit;border:0;cursor:pointer}
-#app{width:min(760px,100%);padding:18px 16px 38px;min-height:100vh}
+#app{width:min(760px,100%);padding:18px 16px 34px}
 header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
-.logo{font-size:34px;font-weight:950;letter-spacing:-1.8px}
-.logo span{color:#8b5cff}
-.iconBtn{width:54px;height:54px;border-radius:17px;background:#ffffff0d;border:1px solid #ffffff18;font-size:24px;box-shadow:var(--shadow)}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.stat{background:#ffffff0b;border:1px solid #ffffff16;border-radius:20px;padding:12px 8px;text-align:center}
-.stat b{display:block;font-size:28px;line-height:1.05}.stat small{color:var(--muted);font-weight:700}
-.progress{height:11px;background:#ffffff0b;border-radius:99px;overflow:hidden;margin:16px 4px}
-#timeBar{height:100%;width:100%;background:linear-gradient(90deg,#2ed47a,#ffd447,#ff4f6d);border-radius:99px;transition:width .08s linear}
-.card{background:#ffffff08;border:1px solid #ffffff16;border-radius:28px;box-shadow:var(--shadow)}
-.target{padding:34px 20px;text-align:center;margin-bottom:14px}
-.target .label{font-weight:900;letter-spacing:1.4px;color:#b9c3df;font-size:18px}
-#targetName{font-size:42px;font-weight:950;margin:8px 0 20px}
-.targetSwatch{width:122px;height:122px;margin:auto;border-radius:32px;border:5px solid #ffffff50;box-shadow:inset 0 5px 0 #ffffff25,0 12px 35px #0006}
-.board{padding:14px;display:grid;gap:10px}
-.tile{width:100%;aspect-ratio:1;border-radius:25px;border:3px solid #ffffff2a;box-shadow:inset 0 6px 0 #ffffff18,0 8px 15px #0005;transition:transform .12s,filter .12s}
-.tile:active{transform:scale(.92)}
-.tile.correct{animation:pop .28s ease}
-.tile.wrong{animation:shake .28s ease;filter:saturate(.55)}
-@keyframes pop{50%{transform:scale(1.12)}}
-@keyframes shake{25%,75%{transform:translateX(-7px)}50%{transform:translateX(7px)}}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-.action{min-height:64px;border-radius:21px;background:#ffffff0b;border:1px solid #ffffff18;font-weight:900;font-size:17px}
-.primary{background:linear-gradient(135deg,#8c5cff,#5630e9);box-shadow:0 12px 30px #6335ef55}
-.message{text-align:center;color:#bac4df;font-weight:800;min-height:28px;padding:12px}
-.overlay{position:fixed;inset:0;background:#050918dd;backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:18px;z-index:20}
-.overlay.show{display:flex}
-.modal{width:min(620px,100%);max-height:90vh;overflow:auto;background:linear-gradient(180deg,#182347,#10172e);border:1px solid #ffffff20;border-radius:30px;padding:24px;box-shadow:0 30px 90px #0008}
-.modal h2{margin:0 0 8px;font-size:30px}.modal p{color:var(--muted);line-height:1.5}
-.modalGrid{display:grid;gap:10px}
-.menuBtn{padding:18px;border-radius:19px;background:#ffffff09;border:1px solid #ffffff16;text-align:left;font-weight:850}
-.menuBtn span{display:block;color:var(--muted);font-size:14px;margin-top:4px;font-weight:600}
-.close{float:right;background:#ffffff10;border-radius:13px;padding:9px 12px}
-.homeHero{text-align:center;padding:24px 0 12px}
-.appIcon{width:100px;height:100px;margin:auto;border-radius:27px;background:linear-gradient(135deg,#8c5cff,#26c9eb);display:grid;place-items:center;font-size:43px;font-weight:950;box-shadow:0 18px 45px #4d43ff55}
-.homeHero h1{font-size:48px;margin:18px 0 8px;letter-spacing:-2px}.homeHero h1 span{color:#8b5cff}
-.homeHero .sub{color:var(--muted);font-size:18px}
-.homeStats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
-.homeStat{padding:14px;border-radius:19px;background:#ffffff09;border:1px solid #ffffff16;text-align:center}.homeStat b{font-size:25px;display:block}
-.bigPlay{width:100%;padding:20px;border-radius:23px;font-size:22px;font-weight:950;background:linear-gradient(135deg,#8d5cff,#5530e8)}
-.info{margin-top:18px;padding:20px}
-.infoRow{padding:16px 0;border-bottom:1px solid #ffffff12}.infoRow:last-child{border:0}.infoRow b{font-size:17px}.infoRow p{margin:5px 0 0;color:var(--muted)}
-.mode{padding:18px;border-radius:20px;background:#ffffff08;border:1px solid #ffffff15}.mode.active{border:2px solid #8b5cff}
-.mode b{font-size:18px}.mode p{margin:5px 0;color:var(--muted)}
-.row{display:flex;gap:10px;align-items:center;justify-content:space-between}
-.setting{padding:16px 0;border-bottom:1px solid #ffffff12}.setting:last-child{border:0}
-.toggle{padding:10px 15px;border-radius:14px;background:#ffffff12;font-weight:900}.toggle.on{background:#2ed47a;color:#071527}
-.shopItem{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:16px;border-radius:18px;background:#ffffff08;border:1px solid #ffffff14}
-.buy{padding:11px 15px;border-radius:14px;background:#7c4dff;font-weight:900}.buy:disabled{opacity:.4}
-.toast{position:fixed;left:50%;bottom:25px;transform:translateX(-50%) translateY(20px);background:#182347;border:1px solid #ffffff22;padding:13px 18px;border-radius:15px;opacity:0;pointer-events:none;transition:.25s;z-index:50;font-weight:850}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@media(max-width:480px){
- #app{padding:14px 12px 28px}.logo{font-size:30px}.stat b{font-size:24px}
- .target{padding:27px 14px}.targetSwatch{width:105px;height:105px;border-radius:27px}
- #targetName{font-size:36px}.tile{border-radius:21px}.board{gap:8px;padding:11px}
- .homeHero h1{font-size:42px}
-}
+.logo{font-size:34px;font-weight:900;letter-spacing:-1.5px}.logo span{color:#8b52ff}
+.iconbtn{width:52px;height:52px;border-radius:16px;background:#ffffff0d;border:1px solid #ffffff20;font-size:24px}
+.panel,.stat,.tile,.mode,.shopitem,.modalbox{background:#ffffff08;border:1px solid #ffffff16;box-shadow:0 12px 35px #0003}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat{padding:13px 8px;border-radius:18px;text-align:center}.stat small{display:block;color:var(--muted)}.stat b{font-size:25px}
+.progress{height:10px;border-radius:99px;background:#ffffff0d;overflow:hidden;margin:18px 0}.bar{height:100%;width:100%;background:linear-gradient(90deg,#31d78b,#ffd34d,#ff4d67);transition:width .1s linear}
+.target{padding:26px 20px;text-align:center;border-radius:28px;margin-bottom:14px}.target small{font-size:17px;color:var(--muted);font-weight:800}.target h2{margin:5px 0 18px;font-size:40px}.swatch{width:118px;height:118px;margin:auto;border-radius:30px;border:6px solid #ffffff22;box-shadow:inset 0 4px 12px #fff3,0 10px 25px #0005}
+.board{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:14px;border-radius:28px}.tile{aspect-ratio:1;border-radius:24px;border:2px solid #ffffff16;transition:transform .08s}.tile:active{transform:scale(.93)}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.btn{padding:17px;border-radius:20px;background:#ffffff0b;border:1px solid #ffffff18;font-weight:800}.primary{background:linear-gradient(135deg,#875cff,#6535ee);box-shadow:0 12px 30px #673de855}.gold{background:linear-gradient(135deg,#ffd84f,#f5a623);color:#16120a}
+.message{text-align:center;color:var(--muted);min-height:25px;margin:14px 0}
+.coinbar{display:flex;align-items:center;gap:8px;background:#ffffff09;border:1px solid #ffffff16;border-radius:18px;padding:9px 12px;font-weight:800}.coin{color:var(--gold)}
+.screen{display:none}.screen.active{display:block}
+.homehero{padding:25px;border-radius:28px;text-align:center;margin-top:8px}.homehero .ac{width:120px;height:120px;margin:0 auto 15px;border-radius:32px;display:grid;place-items:center;font-size:50px;font-weight:900;background:linear-gradient(135deg,#7c5cff,#22c6e8);box-shadow:0 20px 50px #5d46ff55}.homehero h1{font-size:48px;margin:8px 0}.homehero p{color:var(--muted);font-size:18px}
+.modes{display:grid;gap:10px;margin-top:16px}.mode{padding:18px;border-radius:22px;display:flex;gap:15px;align-items:center;text-align:left}.mode .emoji{font-size:30px}.mode h3{margin:0 0 3px}.mode p{margin:0;color:var(--muted)}
+.info{padding:20px;border-radius:24px;margin-top:16px}.info p{color:var(--muted);line-height:1.5}
+.shop{display:grid;gap:12px;margin-top:15px}.shopitem{padding:18px;border-radius:22px;display:flex;align-items:center;justify-content:space-between;gap:10px}.shopitem h3{margin:0}.shopitem p{margin:5px 0 0;color:var(--muted)}
+.modal{position:fixed;inset:0;background:#020617cc;backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:18px;z-index:10}.modal.show{display:flex}.modalbox{width:min(620px,100%);max-height:90vh;overflow:auto;padding:24px;border-radius:28px;background:#111a38}.modalbox h2{margin-top:0}.close{float:right;background:#ffffff10;border-radius:12px;padding:8px 12px}.notice{background:#ffd34d14;border:1px solid #ffd34d33;padding:14px;border-radius:16px;color:#ffe89a;line-height:1.45}
+.footer{text-align:center;color:#687394;font-size:13px;margin-top:25px}
+@media(max-width:520px){#app{padding:14px 12px 28px}.logo{font-size:29px}.stats{gap:7px}.stat{padding:10px 4px}.stat b{font-size:21px}.target h2{font-size:34px}.swatch{width:100px;height:100px}.board{gap:9px;padding:11px}.tile{border-radius:19px}.homehero h1{font-size:40px}}
 </style>
 </head>
 <body>
-<div id="app"></div>
-<div id="overlay" class="overlay"><div id="modal" class="modal"></div></div>
-<div id="toast" class="toast"></div>
-<script>
-"use strict";
-
-/* Alma Crush — single-file offline game */
-
-const COLORS=[
- {name:"Red",hex:"#ff4f6d"},{name:"Orange",hex:"#ff9f43"},{name:"Yellow",hex:"#ffd447"},
- {name:"Green",hex:"#2ed47a"},{name:"Blue",hex:"#4d7cff"},{name:"Cyan",hex:"#2fc9e8"},
- {name:"Purple",hex:"#9257ff"},{name:"Pink",hex:"#ee5bb1"}
-];
-
-const defaultState={
- coins:42,best:0,level:1,lives:3,mode:"classic",sound:true,vibrate:true,
- music:false, highContrast:false, totalCorrect:0, totalGames:0,
- unlocked:{timeRush:true,zen:true}, daily:null, achievements:[]
-};
-
-let state=loadState();
-let game=null;
-let timer=null;
-let audioCtx=null;
-
-function loadState(){
- try{return {...defaultState,...JSON.parse(localStorage.getItem("almaCrushSave")||"{}")};}
- catch(e){return {...defaultState}}
-}
-function save(){localStorage.setItem("almaCrushSave",JSON.stringify(state))}
-function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
-function toast(msg){
- const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");
- setTimeout(()=>t.classList.remove("show"),1800);
-}
-function beep(freq=500,dur=.07){
- if(!state.sound)return;
- try{
-  audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
-  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
-  o.frequency.value=freq;o.type="sine";g.gain.value=.035;o.connect(g);g.connect(audioCtx.destination);
-  o.start();g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);o.stop(audioCtx.currentTime+dur);
- }catch(e){}
-}
-function vibrate(ms=25){if(state.vibrate&&navigator.vibrate)navigator.vibrate(ms)}
-
-function renderHome(){
- clearInterval(timer);game=null;
- document.getElementById("app").innerHTML=`
- <header><div class="logo">Alma <span>Crush</span></div><button class="iconBtn" onclick="openSettings()">⚙️</button></header>
- <section class="card homeHero">
-  <div class="appIcon">AC</div>
-  <h1>Alma <span>Crush</span></h1>
-  <div class="sub">Train your eyes. Beat your best.</div>
-  <div class="homeStats">
-   <div class="homeStat"><b>${state.best}</b><small>Best</small></div>
-   <div class="homeStat"><b>🪙 ${state.coins}</b><small>Coins</small></div>
-   <div class="homeStat"><b>${state.level}</b><small>Level</small></div>
+<div id="app">
+<header>
+  <div class="logo">Alma <span>Crush</span></div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <div class="coinbar">🪙 <span id="coins">0</span></div>
+    <button class="iconbtn" onclick="openSettings()">⚙️</button>
   </div>
-  <button class="bigPlay" onclick="startGame('classic')">▶ Play Now</button>
- </section>
- <section class="card info">
-  <div class="infoRow"><b>🎯 How to play</b><p>A target color appears above the board. Tap the only tile that matches it exactly.</p></div>
-  <div class="infoRow"><b>⚡ Build your combo</b><p>Correct answers increase your combo and reward more points and coins.</p></div>
-  <div class="infoRow"><b>🏆 Level up</b><p>The board grows and the time gets tighter as you advance.</p></div>
- </section>
- <section style="display:grid;gap:10px;margin-top:14px">
-  <button class="mode ${state.mode==="classic"?"active":""}" onclick="startGame('classic')">🎨 <b>Classic</b><p>Find the matching color. Endless levels.</p></button>
-  <button class="mode" onclick="startGame('rush')">⏱️ <b>Time Rush</b><p>60 seconds. Get as many correct answers as possible.</p></button>
-  <button class="mode" onclick="startGame('zen')">🧘 <b>Zen</b><p>No timer and no lives lost. Practice at your own pace.</p></button>
- </section>
- <div class="actions">
-  <button class="action" onclick="openShop()">🪙 Shop</button>
-  <button class="action" onclick="openAchievements()">🏆 Achievements</button>
- </div>
- <div class="message">Alma Crush • Offline game • Progress is saved on this device</div>`;
-}
+</header>
 
-function boardSize(level){
- if(level<4)return 4;if(level<8)return 5;if(level<13)return 6;return 7;
-}
-function timeLimit(level,mode){
- if(mode==="zen")return Infinity;
- if(mode==="rush")return 60;
- return Math.max(2.4,6.5-level*.18);
-}
+<section id="home" class="screen active">
+  <div class="panel homehero">
+    <div class="ac">AC</div>
+    <h1>Alma Crush</h1>
+    <p>Find the target color before time runs out.</p>
+    <div class="stats" style="margin-top:18px">
+      <div class="stat"><small>Best</small><b id="bestHome">0</b></div>
+      <div class="stat"><small>Coins</small><b id="coinHome">0</b></div>
+      <div class="stat"><small>Level</small><b id="levelHome">1</b></div>
+    </div>
+    <button class="btn primary" style="width:100%;margin-top:18px;font-size:19px" onclick="startGame('classic')">▶ Play Now</button>
+  </div>
+
+  <div class="info">
+    <h2>🎯 How to play</h2>
+    <p>Look at the target color, then tap the one matching it exactly. Correct answers increase your score and combo. Wrong answers cost a life.</p>
+    <h3>⚡ Build your combo</h3><p>Keep answering correctly to earn bigger score bonuses.</p>
+    <h3>🏆 Level up</h3><p>The board becomes harder and the timer gets shorter as you progress.</p>
+  </div>
+
+  <div class="modes">
+    <button class="mode" onclick="startGame('classic')"><span class="emoji">🎨</span><div><h3>Classic</h3><p>Endless levels. Three lives.</p></div></button>
+    <button class="mode" onclick="startGame('rush')"><span class="emoji">⏱️</span><div><h3>Time Rush</h3><p>60 seconds. Get as many as possible.</p></div></button>
+    <button class="mode" onclick="startGame('zen')"><span class="emoji">🧘</span><div><h3>Zen</h3><p>No timer. Practice at your own pace.</p></div></button>
+  </div>
+
+  <button class="btn gold" style="width:100%;margin-top:12px" onclick="openShop()">🛒 Buy Coins</button>
+  <div class="footer">Alma Crush • Offline game • Progress is saved on this device</div>
+</section>
+
+<section id="game" class="screen">
+  <div class="stats">
+    <div class="stat"><small>Score</small><b id="score">0</b></div>
+    <div class="stat"><small>Combo</small><b id="combo">0</b></div>
+    <div class="stat"><small>Level</small><b id="level">1</b></div>
+    <div class="stat"><small>Lives</small><b id="lives">3</b></div>
+  </div>
+  <div class="progress"><div id="bar" class="bar"></div></div>
+  <div class="panel target">
+    <small>FIND THIS COLOR</small><h2 id="targetName">Blue</h2><div id="swatch" class="swatch"></div>
+  </div>
+  <div id="board" class="panel board"></div>
+  <div class="actions">
+    <button class="btn" onclick="togglePause()">⏸ Pause</button>
+    <button class="btn primary" onclick="restartGame()">↻ Restart</button>
+  </div>
+  <div class="message" id="message">Find the matching color!</div>
+  <div class="actions">
+    <button class="btn" onclick="toggleSound()">🔊 <span id="soundText">Sound ON</span></button>
+    <button class="btn gold" onclick="openShop()">🪙 Coins</button>
+  </div>
+</section>
+
+<div id="shopModal" class="modal"><div class="modalbox">
+<button class="close" onclick="closeModal('shopModal')">✕</button><h2>🛒 Coin Shop</h2>
+<p style="color:var(--muted)">Use coins for in-game boosts and rewards.</p>
+<div class="shop">
+  <div class="shopitem"><div><h3>🪙 100 Coins</h3><p>Starter pack</p></div><button class="btn gold" onclick="demoBuy(100)">Demo Buy</button></div>
+  <div class="shopitem"><div><h3>🪙 500 Coins</h3><p>Better value</p></div><button class="btn gold" onclick="demoBuy(500)">Demo Buy</button></div>
+  <div class="shopitem"><div><h3>🪙 1,200 Coins</h3><p>Big pack</p></div><button class="btn gold" onclick="demoBuy(1200)">Demo Buy</button></div>
+</div>
+<div class="notice" style="margin-top:15px"><b>Important:</b> These buttons are a local demo. They do not charge money. A real purchase system must be connected later to an approved payment/in-app-purchase service and a secure server.</div>
+</div></div>
+
+<div id="settingsModal" class="modal"><div class="modalbox">
+<button class="close" onclick="closeModal('settingsModal')">✕</button><h2>⚙️ Settings</h2>
+<button class="btn" style="width:100%;margin:7px 0" onclick="toggleSound()">🔊 Toggle sound</button>
+<button class="btn" style="width:100%;margin:7px 0" onclick="dailyBonus()">🎁 Daily bonus</button>
+<button class="btn" style="width:100%;margin:7px 0" onclick="openShop()">🛒 Coin shop</button>
+<button class="btn" style="width:100%;margin:7px 0" onclick="resetProgress()">♻️ Reset local progress</button>
+<p style="color:var(--muted);font-size:13px">Version 1.0 • Alma Crush</p>
+</div></div>
+
+<div id="overModal" class="modal"><div class="modalbox" style="text-align:center">
+<h2>Game Over</h2><div id="finalScore" style="font-size:64px;font-weight:900">0</div>
+<p id="finalText" style="color:var(--muted)"></p>
+<div class="info" style="text-align:left"><h3>How to play</h3><p>Look at the color shown at the top, then tap the matching tile. Correct answers increase your combo and score. Wrong answers cost a life.</p></div>
+<button class="btn primary" style="width:100%;margin-top:12px" onclick="closeModal('overModal');restartGame()">Play Again</button>
+<button class="btn" style="width:100%;margin-top:8px" onclick="closeModal('overModal');showHome()">Home</button>
+</div></div>
+</div>
+
+<script>
+const COLORS=[
+  {name:'Red',hex:'#ff4d67'},{name:'Orange',hex:'#ff9b42'},{name:'Yellow',hex:'#ffd34d'},
+  {name:'Green',hex:'#31d78b'},{name:'Blue',hex:'#4d7cff'},{name:'Purple',hex:'#925cff'},
+  {name:'Pink',hex:'#f052ae'},{name:'Cyan',hex:'#25c5df'}
+];
+let data=JSON.parse(localStorage.getItem('almaCrushSave')||'null')||{coins:0,best:0,level:1,sound:true,lastBonus:''};
+let state={mode:'classic',score:0,combo:0,level:1,lives:3,paused:false,target:null,time:0,maxTime:0,timer:null,locked:false};
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem('almaCrushSave',JSON.stringify(data));updateHome()}
+function updateHome(){$('coins').textContent=data.coins;$('coinHome').textContent=data.coins;$('bestHome').textContent=data.best;$('levelHome').textContent=data.level}
+function show(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));$(id).classList.add('active')}
+function showHome(){clearInterval(state.timer);show('home');updateHome()}
 function startGame(mode){
- state.mode=mode;save();
- const rush=mode==="rush";
- game={mode,score:0,combo:0,level:mode==="classic"?Math.max(1,state.level):1,lives:3,
-       left:rush?60:timeLimit(mode==="classic"?Math.max(1,state.level):1,mode),
-       target:null,tiles:[],running:true,started:Date.now(),rushScore:0};
- renderGame();
- newRound();
+ state={mode,score:0,combo:0,level:mode==='zen'?1:1,lives:3,paused:false,target:null,time:0,maxTime:0,timer:null,locked:false};
+ show('game'); nextRound();
 }
-function renderGame(){
- const modeLabel=game.mode==="rush"?"TIME RUSH":game.mode==="zen"?"ZEN":"CLASSIC";
- document.getElementById("app").innerHTML=`
- <header><div class="logo">Alma <span>Crush</span></div><button class="iconBtn" onclick="pauseGame()">Ⅱ</button></header>
- <div class="stats">
-  <div class="stat"><small>Score</small><b id="score">0</b></div>
-  <div class="stat"><small>Combo</small><b id="combo">0</b></div>
-  <div class="stat"><small>Level</small><b id="level">1</b></div>
-  <div class="stat"><small>${game.mode==="rush"?"Time":"Lives"}</small><b id="lives">${game.mode==="rush"?"60":"❤️❤️❤️"}</b></div>
- </div>
- <div class="progress"><div id="timeBar"></div></div>
- <section class="card target">
-   <div class="label">${modeLabel} • FIND THIS COLOR</div>
-   <div id="targetName">—</div>
-   <div id="targetSwatch" class="targetSwatch"></div>
- </section>
- <section id="board" class="card board"></section>
- <div class="actions">
-   <button class="action" onclick="toggleSound()">🔊 <span id="soundText">Sound ON</span></button>
-   <button class="action primary" onclick="restartGame()">↻ Restart</button>
- </div>
- <div id="message" class="message">Find the matching color!</div>`;
- updateHUD();
+function restartGame(){closeModal('overModal');startGame(state.mode)}
+function gridSize(){return Math.min(6,4+Math.floor((state.level-1)/3))}
+function nextRound(){
+ state.locked=false;
+ const pool=COLORS.slice(0,Math.min(COLORS.length,5+Math.floor((state.level-1)/2)));
+ state.target=pool[Math.floor(Math.random()*pool.length)];
+ $('targetName').textContent=state.target.name;$('swatch').style.background=state.target.hex;
+ const n=gridSize(), total=n*n, correct=Math.floor(Math.random()*total), arr=[];
+ for(let i=0;i<total;i++){arr.push(i===correct?state.target:pool[Math.floor(Math.random()*pool.length)])}
+ const board=$('board');board.style.gridTemplateColumns=`repeat(${n},1fr)`;board.innerHTML='';
+ arr.forEach(c=>{const b=document.createElement('button');b.className='tile';b.style.background=c.hex;b.onclick=()=>pick(c===state.target);board.appendChild(b)});
+ $('score').textContent=state.score;$('combo').textContent=state.combo;$('level').textContent=state.level;$('lives').textContent=state.lives;
+ setupTimer();
 }
-function newRound(){
- if(!game||!game.running)return;
- const size=boardSize(game.level), total=size*size;
- game.target=COLORS[Math.floor(Math.random()*COLORS.length)];
- let wrong=COLORS.filter(c=>c.name!==game.target.name);
- let arr=[];
- for(let i=0;i<total-1;i++)arr.push(wrong[Math.floor(Math.random()*wrong.length)]);
- const correctIndex=Math.floor(Math.random()*total);
- arr.splice(correctIndex,0,game.target);
- game.tiles=arr;
- const board=document.getElementById("board");
- board.style.gridTemplateColumns=`repeat(${size},1fr)`;
- board.innerHTML=arr.map((c,i)=>`<button class="tile" style="background:${c.hex}" onclick="chooseTile(${i})" aria-label="color tile"></button>`).join("");
- document.getElementById("targetName").textContent=game.target.name;
- document.getElementById("targetSwatch").style.background=game.target.hex;
- document.getElementById("message").textContent=`Find the matching ${game.target.name.toLowerCase()}!`;
- updateHUD();
+function setupTimer(){
+ clearInterval(state.timer);
+ if(state.mode==='zen'){setBar(1);return}
+ state.maxTime=Math.max(1.8,5.5-state.level*.18);
+ state.time=state.maxTime;setBar(1);
+ state.timer=setInterval(()=>{if(state.paused)return;state.time-=.1;setBar(state.time/state.maxTime);if(state.time<=0){clearInterval(state.timer);loseLife('Time is up!')}},100);
 }
-function chooseTile(i){
- if(!game||!game.running)return;
- const tile=document.querySelectorAll(".tile")[i];
- const chosen=game.tiles[i];
- if(chosen.name===game.target.name){
-  tile.classList.add("correct"); beep(700,.06);vibrate(18);
-  game.combo++;
-  const base=10+game.level*2;
-  const comboBonus=Math.min(100,game.combo*3);
-  game.score+=base+comboBonus;
-  state.totalCorrect++;
-  if(game.mode==="classic" && game.combo%5===0)game.lives=Math.min(3,game.lives+1);
-  if(game.mode==="classic" && game.score>state.best){state.best=game.score}
-  if(game.mode==="classic"){
-   const old=game.level;game.level=1+Math.floor(game.score/100);
-   if(game.level>old){toast(`Level ${game.level}!`);beep(900,.1)}
-   state.level=Math.max(state.level,game.level);
-  }
-  const coinGain=1+(game.combo%10===0?2:0);
-  state.coins+=coinGain;
-  if(game.mode==="rush")game.rushScore++;
-  save();updateHUD();
-  setTimeout(newRound,100);
- }else{
-  tile.classList.add("wrong");beep(180,.1);vibrate(90);
-  game.combo=0;
-  if(game.mode==="classic"){
-    game.lives--;updateHUD();
-    document.getElementById("message").textContent="❌ Wrong color — combo lost!";
-    if(game.lives<=0){setTimeout(gameOver,180);return}
-  }else{
-    document.getElementById("message").textContent="Try again!";
-  }
- }
+function setBar(v){$('bar').style.width=Math.max(0,Math.min(1,v))*100+'%'}
+function pick(correct){
+ if(state.paused||state.locked)return;
+ if(correct){
+   state.combo++;state.score+=10+Math.min(50,state.combo*2);state.time=Math.min(state.maxTime,state.time+.45);
+   if(state.combo%5===0){state.level++;data.level=Math.max(data.level,state.level);data.coins+=5;save();$('message').textContent='🔥 Combo bonus! +5 coins'}
+   else $('message').textContent='✓ Correct!';
+   nextRound();
+ }else loseLife('Wrong color — try again!');
 }
-function updateHUD(){
- if(!game)return;
- const s=document.getElementById("score"),c=document.getElementById("combo"),l=document.getElementById("level"),lv=document.getElementById("lives");
- if(s)s.textContent=game.score;
- if(c)c.textContent=game.combo;
- if(l)l.textContent=game.level;
- if(lv)lv.textContent=game.mode==="rush"?Math.ceil(game.left):"❤️".repeat(game.lives);
- const bar=document.getElementById("timeBar");
- if(bar){
-  if(game.mode==="zen"){bar.style.width="100%";bar.style.background="#2ed47a"}
-  else{
-   const max=game.mode==="rush"?60:timeLimit(game.level,game.mode);
-   bar.style.width=Math.max(0,Math.min(100,game.left/max*100))+"%";
-  }
- }
- const st=document.getElementById("soundText");if(st)st.textContent=state.sound?"Sound ON":"Sound OFF";
+function loseLife(msg){
+ state.lives--;state.combo=0;$('lives').textContent=state.lives;$('combo').textContent=0;$('message').textContent=msg;
+ if(state.lives<=0){clearInterval(state.timer);gameOver();} else {state.time=Math.max(1,state.maxTime*.65);setTimeout(nextRound,180)}
 }
-function tick(){
- if(!game||!game.running)return;
- if(game.mode==="zen")return;
- game.left-=.1;
- updateHUD();
- if(game.left<=0){game.left=0;gameOver()}
-}
-function restartGame(){startGame(game?game.mode:"classic")}
-function pauseGame(){
- if(!game)return;
- game.running=!game.running;
- if(game.running){startTimer();closeModal()}
- else{clearInterval(timer);showModal(`<h2>⏸️ Paused</h2><p>Take a breath. Your game is waiting.</p><button class="bigPlay" onclick="pauseGame()">▶ Continue</button>`)}
-}
-function startTimer(){clearInterval(timer);timer=setInterval(tick,100)}
 function gameOver(){
- if(!game)return;
- game.running=false;clearInterval(timer);
- state.totalGames++;
- if(game.score>state.best)state.best=game.score;
- state.level=Math.max(state.level,game.level);save();
- showModal(`<h2>${game.mode==="rush"?"⏱️ Time's up!":"💔 Game Over"}</h2>
- <p>${game.mode==="rush"?"Great run!":"You used all your lives."}</p>
- <div class="homeStats">
-  <div class="homeStat"><b>${game.score}</b><small>Score</small></div>
-  <div class="homeStat"><b>${game.combo}</b><small>Combo</small></div>
-  <div class="homeStat"><b>🏆 ${state.best}</b><small>Best</small></div>
- </div>
- <button class="bigPlay" onclick="startGame('${game.mode}')">↻ Play Again</button>
- <button class="menuBtn" style="width:100%;margin-top:10px" onclick="renderHome();closeModal()">⌂ Home</button>`);
+ state.locked=true;if(state.score>data.best){data.best=state.score}data.level=Math.max(data.level,state.level);save();
+ $('finalScore').textContent=state.score;$('finalText').textContent=`You reached Level ${state.level} with a score of ${state.score}.`;
+ $('overModal').classList.add('show');
 }
-function toggleSound(){state.sound=!state.sound;save();beep(650,.05);updateHUD()}
-function showModal(content){document.getElementById("modal").innerHTML=content;document.getElementById("overlay").classList.add("show")}
-function closeModal(){document.getElementById("overlay").classList.remove("show")}
-document.getElementById("overlay").addEventListener("click",e=>{if(e.target.id==="overlay")closeModal()});
-
-function openSettings(){
- showModal(`<button class="close" onclick="closeModal()">✕</button><h2>⚙️ Settings</h2>
- <div class="setting row"><div><b>🔊 Sound</b><p>Game sounds</p></div><button class="toggle ${state.sound?"on":""}" onclick="state.sound=!state.sound;save();openSettings()"> ${state.sound?"ON":"OFF"} </button></div>
- <div class="setting row"><div><b>📳 Vibration</b><p>Touch feedback</p></div><button class="toggle ${state.vibrate?"on":""}" onclick="state.vibrate=!state.vibrate;save();openSettings()"> ${state.vibrate?"ON":"OFF"} </button></div>
- <div class="setting row"><div><b>🔆 High contrast</b><p>Stronger tile borders</p></div><button class="toggle ${state.highContrast?"on":""}" onclick="state.highContrast=!state.highContrast;save();openSettings()"> ${state.highContrast?"ON":"OFF"} </button></div>
- <button class="menuBtn" style="width:100%;margin-top:12px" onclick="confirmReset()">🗑️ Reset all progress<span>This cannot be undone.</span></button>`);
+function togglePause(){state.paused=!state.paused;$('message').textContent=state.paused?'⏸ Paused':'▶ Continue'}
+function toggleSound(){data.sound=!data.sound;save();$('soundText').textContent=data.sound?'Sound ON':'Sound OFF'}
+function openShop(){$('shopModal').classList.add('show')}
+function openSettings(){$('settingsModal').classList.add('show')}
+function closeModal(id){$(id).classList.remove('show')}
+function demoBuy(amount){data.coins+=amount;save();alert(`Demo purchase complete: +${amount} coins. No real payment was made.`)}
+function dailyBonus(){
+ const today=new Date().toISOString().slice(0,10);
+ if(data.lastBonus===today){alert('Daily bonus already claimed today.');return}
+ data.lastBonus=today;data.coins+=25;save();alert('🎁 Daily bonus: +25 coins!');
 }
-function confirmReset(){
- showModal(`<h2>Reset progress?</h2><p>This will erase coins, scores, levels and achievements on this device.</p>
- <div class="actions"><button class="action" onclick="openSettings()">Cancel</button><button class="action" style="background:#ff4f6d" onclick="resetAll()">Reset</button></div>`);
-}
-function resetAll(){localStorage.removeItem("almaCrushSave");state={...defaultState};closeModal();renderHome();toast("Progress reset")}
-function openShop(){
- const items=[
-  ["life","❤️ Extra Life","Start your next Classic game with +1 life",25],
-  ["double","⚡ Double Coins","Earn extra coins for 10 correct answers",60],
-  ["theme","✨ Premium Glow","A cosmetic unlock for your profile",100]
- ];
- showModal(`<button class="close" onclick="closeModal()">✕</button><h2>🪙 Shop</h2><p>You have <b>🪙 ${state.coins}</b> coins.</p>
- <div class="modalGrid">${items.map(x=>`<div class="shopItem"><div><b>${x[1]}</b><p>${x[2]}</p></div><button class="buy" ${state.coins<x[3]?"disabled":""} onclick="buyItem('${x[0]}',${x[3]})">🪙 ${x[3]}</button></div>`).join("")}</div>`);
-}
-function buyItem(type,cost){
- if(state.coins<cost)return;
- state.coins-=cost;
- if(type==="life")state.livesBonus=(state.livesBonus||0)+1;
- if(type==="double")state.doubleCoinsUntil=(state.totalCorrect||0)+10;
- if(type==="theme")state.glow=true;
- save();toast("Purchased!");openShop();
-}
-function openAchievements(){
- const achievements=[
-  ["first","🎯 First Crush","Get your first correct answer",state.totalCorrect>=1],
-  ["combo10","⚡ Combo 10","Reach a combo of 10",game&&game.combo>=10],
-  ["score500","🏆 Score 500","Reach 500 points in one game",state.best>=500],
-  ["level10","🚀 Level 10","Reach level 10",state.level>=10],
-  ["coins100","🪙 Coin Collector","Collect 100 coins",state.coins>=100]
- ];
- showModal(`<button class="close" onclick="closeModal()">✕</button><h2>🏆 Achievements</h2>
- <div class="modalGrid">${achievements.map(a=>`<div class="shopItem" style="opacity:${a[3]?1:.45}"><div><b>${a[1]}</b><p>${a[2]}</p></div><b>${a[3]?"✓":"🔒"}</b></div>`).join("")}</div>`);
-}
-window.addEventListener("load",renderHome);
+function resetProgress(){if(confirm('Reset all local progress?')){data={coins:0,best:0,level:1,sound:true,lastBonus:''};save();alert('Progress reset.')}}
+updateHome();
 </script>
 </body>
 </html>
