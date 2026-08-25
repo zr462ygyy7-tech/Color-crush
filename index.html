@@ -1,80 +1,241 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#111936">
+<meta name="theme-color" content="#0d1430">
 <title>Alma Crush</title>
 <style>
+:root{
+  --bg:#080d20;--bg2:#121a3d;--card:#151e3d;--card2:#1b2550;
+  --text:#f7f8ff;--muted:#aeb7d4;--accent:#7c4dff;--accent2:#35c8ff;
+  --good:#31d77a;--bad:#ff4d6d;--gold:#ffd34d;
+}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{--bg:#0d1430;--card:#151e3d;--text:#f7f8ff;--muted:#aeb7d4}
-html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at top,#25315f,#111936 42%,#090e21);color:var(--text)}
-body{display:flex;justify-content:center}button{font:inherit;color:inherit;border:0;cursor:pointer}
-#app{width:min(760px,100%);padding:18px 16px 34px}
-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.logo{font-size:34px;font-weight:900;letter-spacing:-1.5px}.logo span{color:#8b5cff}
-.icon{width:48px;height:48px;border-radius:15px;background:#ffffff10;border:1px solid #ffffff1c;display:grid;place-items:center;font-size:22px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
-.stat{background:#ffffff0c;border:1px solid #ffffff16;border-radius:17px;padding:10px 6px;text-align:center}.stat small{display:block;color:var(--muted);font-size:12px}.stat b{font-size:23px}
-.progress{height:10px;background:#ffffff0d;border-radius:99px;margin:16px 2px;overflow:hidden}
-#bar{height:100%;width:100%;background:linear-gradient(90deg,#2dd881,#ffd34d,#ff4f71);border-radius:99px}
-.card{background:#ffffff08;border:1px solid #ffffff16;border-radius:27px;box-shadow:0 18px 50px #0003}
-.target{padding:25px 20px 27px;text-align:center;margin-bottom:16px}.target h3{margin:0;color:var(--muted);font-size:16px;letter-spacing:.7px}
-#targetName{font-size:34px;font-weight:900;margin:8px 0 16px}.targetDot{width:82px;height:82px;border-radius:25px;margin:auto;border:6px solid #ffffff35;box-shadow:0 10px 25px #0005}
-.board{padding:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
-.tile{aspect-ratio:1;border-radius:22px;border:3px solid #ffffff18;box-shadow:inset 0 1px #ffffff25,0 7px 15px #0004;transition:transform .12s}.tile:active{transform:scale(.91)}
-.tile.correct{animation:pop .34s ease}.tile.wrong{animation:shake .32s ease}
-@keyframes pop{50%{transform:scale(1.12);filter:brightness(1.3)}}@keyframes shake{25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-5px)}}
-.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.action{padding:15px;border-radius:16px;background:#ffffff0c;border:1px solid #ffffff16;font-weight:800}.action.primary{background:linear-gradient(135deg,#7658ff,#9a5cff)}
-.message{text-align:center;color:var(--muted);min-height:25px;margin:12px 0 0;font-size:14px}
-.overlay{position:fixed;inset:0;background:#05091ad9;backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:22px;z-index:20}
-.modal{width:min(500px,100%);background:#151e3d;border:1px solid #ffffff1b;border-radius:28px;padding:28px;text-align:center;box-shadow:0 30px 80px #0008}.modal h1{font-size:34px;margin:0 0 8px}
-.modal p{color:var(--muted);line-height:1.6}.modal .big{font-size:50px;font-weight:900;margin:10px 0}.modal button{width:100%;padding:15px;border-radius:16px;background:linear-gradient(135deg,#7658ff,#a05cff);font-weight:900;margin-top:10px}
-.help{text-align:left;background:#ffffff08;border-radius:18px;padding:15px;margin:15px 0;color:#dbe0f5}.help b{color:white}
-@media(max-width:430px){#app{padding:13px 12px 28px}.logo{font-size:29px}.stats{gap:6px}.stat{padding:8px 3px}.stat b{font-size:20px}.target{padding:21px 12px}.board{padding:11px;gap:9px}.tile{border-radius:18px}}
+html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% 0,#1c2b63 0,#0b1027 42%,#070b19 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{display:flex;justify-content:center}
+button{font:inherit;color:inherit;border:0;cursor:pointer}
+#app{width:min(760px,100%);padding:18px 16px 42px}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.logo{font-size:32px;font-weight:900;letter-spacing:-1.2px}
+.logo span{color:#865cff}
+.iconbtn{width:54px;height:54px;border-radius:17px;background:#ffffff0d;border:1px solid #ffffff18;font-size:25px}
+.panel,.card{background:#ffffff08;border:1px solid #ffffff14;box-shadow:0 14px 50px #0003;border-radius:28px}
+.hero{padding:28px 20px;text-align:center}
+.appicon{width:112px;height:112px;margin:0 auto 18px;border-radius:30px;background:linear-gradient(145deg,#865cff,#25c8ff);display:grid;place-items:center;font-size:48px;font-weight:900;box-shadow:0 15px 45px #7147ff55}
+h1{font-size:46px;line-height:1;margin:6px 0 14px;letter-spacing:-2px}
+.subtitle{font-size:18px;line-height:1.5;color:var(--muted);margin:0 auto 24px;max-width:560px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.stat{padding:14px 8px;border-radius:20px;background:#ffffff09;border:1px solid #ffffff12}
+.stat b{display:block;font-size:27px}.stat small{color:var(--muted);font-size:13px}
+.primary{width:100%;padding:17px 20px;border-radius:19px;background:linear-gradient(100deg,#8a5cff,#5c35f2);font-size:20px;font-weight:900;box-shadow:0 12px 35px #6740ff55}
+.section{margin-top:18px;padding:20px}
+.help{display:grid;gap:0}
+.helprow{display:grid;grid-template-columns:48px 1fr;gap:10px;padding:17px 0;border-bottom:1px solid #ffffff10}
+.helprow:last-child{border:0}.emoji{font-size:28px}.helprow b{font-size:18px}.helprow p{margin:5px 0 0;color:var(--muted);line-height:1.4}
+.modes{display:grid;gap:12px;margin-top:18px}
+.mode{padding:18px;border-radius:22px;background:#ffffff06;border:1px solid #ffffff12;text-align:left;display:grid;grid-template-columns:54px 1fr auto;align-items:center;gap:12px}
+.mode.active{border:2px solid #7b4dff;background:#6f46ff0d}.modeicon{font-size:30px}.mode b{display:block;font-size:18px}.mode small{color:var(--muted);display:block;margin-top:4px}.chev{color:var(--muted);font-size:22px}
+.footer{text-align:center;color:#7f8aac;margin:28px 0 0;font-size:13px}
+.hidden{display:none!important}
+#game{padding-bottom:15px}
+.topbar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
+.gstat{padding:10px 5px;text-align:center;border-radius:17px;background:#ffffff09;border:1px solid #ffffff12}.gstat small{display:block;color:var(--muted);font-size:11px}.gstat b{font-size:21px}
+.progress{height:10px;background:#ffffff0d;border-radius:20px;overflow:hidden;margin:12px 0 18px}.bar{height:100%;width:100%;background:linear-gradient(90deg,#32d77a,#ffd34d,#ff4d6d);transition:width .1s linear}
+.target{padding:24px 15px;text-align:center;margin-bottom:14px}.target small{color:var(--muted);font-weight:800;letter-spacing:.7px}.targetname{font-size:32px;font-weight:900;margin:7px 0 15px}.targetswatch{width:78px;height:78px;border-radius:24px;margin:auto;border:5px solid #ffffff28;box-shadow:0 10px 30px #0004}
+.board{padding:12px;display:grid;gap:12px;background:#ffffff05}.tile{aspect-ratio:1;border-radius:22px;border:3px solid #ffffff15;box-shadow:inset 0 1px #ffffff22,0 8px 18px #0003;transition:transform .08s,filter .15s}.tile:active{transform:scale(.94)}.tile.correct{animation:pop .25s}.tile.wrong{animation:shake .25s;filter:saturate(.6)}
+@keyframes pop{50%{transform:scale(1.08)}}
+@keyframes shake{25%{transform:translateX(-7px)}50%{transform:translateX(7px)}75%{transform:translateX(-4px)}}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.secondary{padding:14px;border-radius:17px;background:#ffffff0b;border:1px solid #ffffff13}
+.message{text-align:center;min-height:25px;color:var(--muted);font-weight:700;margin:10px 0}
+.modal{position:fixed;inset:0;background:#0009;display:grid;place-items:center;padding:18px;z-index:10}
+.modalbox{width:min(520px,100%);padding:24px;border-radius:28px;background:#111936;border:1px solid #ffffff20;box-shadow:0 25px 90px #0009}.modalbox h2{margin-top:0;font-size:28px}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #ffffff10}.row:last-of-type{border:0}
+.toggle{padding:9px 14px;border-radius:14px;background:#ffffff12}.toggle.on{background:#35c87f33;color:#5df0a0}
+.close{margin-top:18px}
+@media(max-width:480px){#app{padding:14px 12px 35px}.logo{font-size:29px}h1{font-size:40px}.appicon{width:98px;height:98px;font-size:41px}.hero{padding:23px 15px}.targetname{font-size:29px}.tile{border-radius:17px}.board{gap:9px;padding:9px}}
 </style>
 </head>
 <body>
 <div id="app">
-<header><div class="logo">Alma <span>Crush</span></div><button class="icon" id="pauseBtn">Ⅱ</button></header>
-<section class="stats">
-<div class="stat"><small>Score</small><b id="score">0</b></div><div class="stat"><small>Combo</small><b id="combo">0</b></div><div class="stat"><small>Level</small><b id="level">1</b></div><div class="stat"><small>Lives</small><b id="lives">3</b></div>
+<header><div class="logo">Alma <span>Crush</span></div><button class="iconbtn" id="settingsBtn" aria-label="Settings">⚙️</button></header>
+
+<section id="home">
+  <div class="panel hero">
+    <div class="appicon">AC</div>
+    <h1>Alma Crush</h1>
+    <p class="subtitle">Beat your best score by finding the target color before time runs out.</p>
+    <div class="stats">
+      <div class="stat"><b id="bestHome">0</b><small>Best</small></div>
+      <div class="stat"><b id="coinsHome">0</b><small>Coins</small></div>
+      <div class="stat"><b id="levelHome">1</b><small>Level</small></div>
+    </div>
+    <button class="primary" id="playBtn">▶ Play Now</button>
+  </div>
+
+  <div class="panel section help">
+    <div class="helprow"><div class="emoji">🎯</div><div><b>How to play</b><p>A target color appears above the board. Tap the only tile that matches it exactly.</p></div></div>
+    <div class="helprow"><div class="emoji">⚡</div><div><b>Build your combo</b><p>Correct answers increase your combo and score. A mistake breaks the combo.</p></div></div>
+    <div class="helprow"><div class="emoji">🏆</div><div><b>Level up</b><p>The board grows and the time gets tighter as you advance.</p></div></div>
+  </div>
+
+  <div class="modes">
+    <button class="mode active" data-mode="classic"><div class="modeicon">🎨</div><div><b>Classic</b><small>Find the matching color. Endless levels.</small></div><div class="chev">›</div></button>
+    <button class="mode" data-mode="rush"><div class="modeicon">⏱️</div><div><b>Time Rush</b><small>60 seconds. Get as many correct answers as possible.</small></div><div class="chev">›</div></button>
+    <button class="mode" data-mode="zen"><div class="modeicon">🧘</div><div><b>Zen</b><small>No timer. Practice at your own pace.</small></div><div class="chev">›</div></button>
+  </div>
+  <div class="footer">Alma Crush • Offline game • Progress is saved on this device</div>
 </section>
-<div class="progress"><div id="bar"></div></div>
-<section class="card target"><h3>FIND THIS COLOR</h3><div id="targetName">Blue</div><div class="targetDot" id="targetDot"></div></section>
-<section class="card board" id="board"></section>
-<div class="controls"><button class="action" id="soundBtn">🔊 Sound ON</button><button class="action primary" id="restartBtn">↻ Restart</button></div>
-<div class="message" id="message">Tap the tile that matches the color shown above.</div>
+
+<section id="game" class="hidden">
+  <div class="topbar">
+    <div class="gstat"><small>Score</small><b id="score">0</b></div>
+    <div class="gstat"><small>Combo</small><b id="combo">0</b></div>
+    <div class="gstat"><small>Level</small><b id="level">1</b></div>
+    <div class="gstat"><small>Lives</small><b id="lives">3</b></div>
+  </div>
+  <div class="progress"><div id="timebar" class="bar"></div></div>
+  <div class="panel target"><small>FIND THIS COLOR</small><div id="targetName" class="targetname">Blue</div><div id="targetSwatch" class="targetswatch"></div></div>
+  <div id="board" class="panel board"></div>
+  <div id="message" class="message"></div>
+  <div class="controls"><button class="secondary" id="pauseBtn">⏸ Pause</button><button class="secondary" id="quitBtn">⌂ Home</button></div>
+</section>
+
+<div id="modal" class="modal hidden">
+ <div class="modalbox">
+   <h2 id="modalTitle">Paused</h2>
+   <div id="modalBody"></div>
+   <button class="primary close" id="modalMain">Continue</button>
+   <button class="secondary close" id="modalAlt">Home</button>
+ </div>
 </div>
-<div class="overlay" id="overlay"><div class="modal">
-<h1 id="modalTitle">Welcome to Alma Crush</h1><div class="big" id="modalScore">🎨</div><p id="modalText"></p>
-<div class="help" id="helpBox"><b>How to play</b><br>Look at the color shown at the top, then tap the matching tile.<br>Correct answers increase your combo and score. Wrong answers cost a life. The timer gets harder as you level up.</div>
-<button id="modalBtn">Start Game</button>
-</div></div>
+
+<div id="settingsModal" class="modal hidden">
+ <div class="modalbox">
+  <h2>Settings</h2>
+  <div class="row"><span>Sound</span><button class="toggle on" id="soundToggle">ON</button></div>
+  <div class="row"><span>Haptic feedback</span><button class="toggle on" id="hapticToggle">ON</button></div>
+  <div class="row"><span>Language</span><span>English</span></div>
+  <button class="primary close" id="settingsClose">Done</button>
+ </div>
+</div>
+</div>
+
 <script>
-"use strict";
-const colors=[
-{name:"Red",hex:"#ff4d67"},{name:"Blue",hex:"#4f7cff"},{name:"Green",hex:"#2ed27b"},{name:"Purple",hex:"#965cff"},
-{name:"Pink",hex:"#f45bb0"},{name:"Cyan",hex:"#27c9e8"},{name:"Orange",hex:"#ff9d43"},{name:"Yellow",hex:"#ffd447"}];
-let score=0,combo=0,level=1,lives=3,time=20,target=0,running=false,paused=false,sound=true,timer=null,audioCtx=null;
-const size=16,$=id=>document.getElementById(id),rnd=n=>Math.floor(Math.random()*n);
-function beep(freq,duration=.07){if(!sound)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.frequency.value=freq;o.type="sine";g.gain.value=.035;o.connect(g);g.connect(audioCtx.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.stop(audioCtx.currentTime+duration)}catch(e){}}
-function updateStats(){$("score").textContent=score;$("combo").textContent=combo;$("level").textContent=level;$("lives").textContent=lives;$("bar").style.width=Math.max(0,time/20*100)+"%"}
-function shuffle(a){for(let i=a.length-1;i>0;i--){let j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]]}}
-function makeRound(){if(!running)return;target=rnd(colors.length);$("targetName").textContent=colors[target].name;$("targetDot").style.background=colors[target].hex;
-let correct=rnd(size),arr=[];for(let i=0;i<size;i++){if(i===correct)arr.push(target);else{let x=rnd(colors.length-1);if(x>=target)x++;arr.push(x)}}shuffle(arr);
-const board=$("board");board.innerHTML="";arr.forEach(c=>{let b=document.createElement("button");b.className="tile";b.dataset.color=c;b.style.background=colors[c].hex;b.setAttribute("aria-label",colors[c].name);b.onclick=()=>choose(b,c);board.appendChild(b)});
-time=Math.max(7,20-(level-1)*1.2);updateStats()}
-function choose(btn,c){if(!running||paused)return;if(c===target){combo++;let gained=10+combo*2+level*3;score+=gained;btn.classList.add("correct");$("message").textContent="Correct! +"+gained+" points";beep(620,.08);if(combo%5===0){level++;beep(880,.12);$("message").textContent="🔥 Level up! Level "+level}setTimeout(makeRound,180)}else{lives--;combo=0;btn.classList.add("wrong");$("message").textContent="Wrong color — try again!";beep(170,.12);if(lives<=0){endGame();return}updateStats()}}
-function tick(){clearInterval(timer);timer=setInterval(()=>{if(!running||paused)return;time-=.1;let max=Math.max(7,20-(level-1)*1.2);$("bar").style.width=Math.max(0,time/max*100)+"%";if(time<=0){lives--;combo=0;if(lives<=0){endGame();return}$("message").textContent="Time's up! A life was lost.";beep(160,.12);makeRound()}},100)}
-function startGame(){score=0;combo=0;level=1;lives=3;running=true;paused=false;$("overlay").style.display="none";$("pauseBtn").textContent="Ⅱ";$("message").textContent="Find the matching color!";makeRound();tick()}
-function endGame(){running=false;clearInterval(timer);$("modalTitle").textContent="Game Over";$("modalScore").textContent=score;$("modalText").textContent="You reached Level "+level+" with a score of "+score+".";$("helpBox").style.display="block";$("modalBtn").textContent="Play Again";$("overlay").style.display="flex";beep(120,.25)}
-function pauseGame(){if(!running)return;paused=!paused;$("pauseBtn").textContent=paused?"▶":"Ⅱ";if(paused){$("modalTitle").textContent="Paused";$("modalScore").textContent=score;$("modalText").textContent="Take a breath, then continue when you're ready.";$("modalBtn").textContent="Continue";$("overlay").style.display="flex"}}
-$("pauseBtn").onclick=()=>{if(paused){paused=false;$("overlay").style.display="none";$("pauseBtn").textContent="Ⅱ";$("message").textContent="Game resumed"}else pauseGame()};
-$("modalBtn").onclick=()=>{if(paused){paused=false;$("overlay").style.display="none";$("pauseBtn").textContent="Ⅱ";return}startGame()};
-$("restartBtn").onclick=startGame;
-$("soundBtn").onclick=()=>{sound=!sound;$("soundBtn").textContent=sound?"🔊 Sound ON":"🔇 Sound OFF";if(sound)beep(650,.07)};
-$("modalText").textContent="A fast color-matching challenge. Find the exact color shown at the top and tap it before time runs out.";
-$("overlay").style.display="flex";updateStats();
+(() => {
+const COLORS=[
+ {name:"Red",hex:"#ff4d68"},{name:"Blue",hex:"#4f7df3"},{name:"Green",hex:"#2ed07d"},
+ {name:"Purple",hex:"#965cff"},{name:"Pink",hex:"#f45caf"},{name:"Cyan",hex:"#27c7e9"},
+ {name:"Orange",hex:"#ff9f43"},{name:"Yellow",hex:"#ffd34d"}
+];
+const state=JSON.parse(localStorage.getItem("almaCrushState")||"null")||{
+ best:0,coins:0,level:1,mode:"classic",sound:true,haptic:true
+};
+let game=null,timer=null;
+
+const $=id=>document.getElementById(id);
+const save=()=>localStorage.setItem("almaCrushState",JSON.stringify(state));
+const vibrate=p=>{if(state.haptic&&navigator.vibrate)navigator.vibrate(p)};
+function beep(freq=520,dur=.06){
+ if(!state.sound)return;
+ try{const c=new (window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.frequency.value=freq;o.type="sine";g.gain.value=.035;o.connect(g);g.connect(c.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+dur);o.stop(c.currentTime+dur)}catch(e){}
+}
+function renderHome(){
+ $("bestHome").textContent=state.best;$("coinsHome").textContent=state.coins;$("levelHome").textContent=state.level;
+ document.querySelectorAll(".mode").forEach(x=>x.classList.toggle("active",x.dataset.mode===state.mode));
+}
+function gridSize(level){
+ return level<3?3:level<7?4:level<12?5:6;
+}
+function roundTime(level){
+ if(state.mode==="zen")return Infinity;
+ if(state.mode==="rush")return 60000;
+ return Math.max(2200,7000-level*250);
+}
+function startGame(){
+ $("home").classList.add("hidden");$("game").classList.remove("hidden");
+ game={score:0,combo:0,level:Math.max(1,state.level),lives:3,timeLeft:roundTime(state.level),paused:false};
+ nextRound(); updateUI();
+}
+function nextRound(){
+ if(!game)return;
+ clearInterval(timer);
+ const n=gridSize(game.level), count=n*n;
+ const targetIndex=Math.floor(Math.random()*COLORS.length);
+ const target=COLORS[targetIndex];
+ const tiles=[];
+ const other=COLORS.filter((_,i)=>i!==targetIndex);
+ const answer=Math.floor(Math.random()*count);
+ for(let i=0;i<count;i++)tiles.push(i===answer?target:other[Math.floor(Math.random()*other.length)]);
+ game.target=target;game.answer=answer;game.timeLeft=roundTime(game.level);
+ $("targetName").textContent=target.name;$("targetSwatch").style.background=target.hex;
+ const board=$("board");board.style.gridTemplateColumns=`repeat(${n},1fr)`;board.innerHTML="";
+ tiles.forEach((c,i)=>{
+  const b=document.createElement("button");b.className="tile";b.style.background=c.hex;b.dataset.i=i;
+  b.addEventListener("click",()=>pick(i,c===target,b));board.appendChild(b);
+ });
+ if(state.mode!=="zen") startTimer(); else $("timebar").style.width="100%";
+ updateUI();
+}
+function startTimer(){
+ const started=performance.now(), total=roundTime(game.level);
+ timer=setInterval(()=>{
+  if(!game||game.paused)return;
+  const elapsed=performance.now()-started;game.timeLeft=Math.max(0,total-elapsed);
+  $("timebar").style.width=(game.timeLeft/total*100)+"%";
+  if(game.timeLeft<=0){clearInterval(timer);fail("Time's up!");}
+ },50);
+}
+function pick(i,correct,el){
+ if(!game||game.paused)return;
+ if(correct){
+   el.classList.add("correct");game.combo++;
+   const gain=10+game.level*2+Math.min(50,game.combo*2);
+   game.score+=gain;state.coins+=Math.max(1,Math.floor(gain/15));
+   beep(700,.05);vibrate(12);
+   if(game.score>state.best){state.best=game.score}
+   if(game.combo%5===0) game.level++;
+   state.level=Math.max(state.level,game.level);save();
+   $("message").textContent=`+${gain}  •  Great!`;
+   setTimeout(()=>nextRound(),130);
+ }else{
+   el.classList.add("wrong");game.combo=0;game.lives--;
+   beep(180,.12);vibrate([20,40,20]);
+   $("message").textContent="Wrong tile!";
+   if(game.lives<=0)setTimeout(()=>fail("No lives left"),180); else updateUI();
+ }
+}
+function fail(reason){
+ clearInterval(timer);
+ if(game.score>state.best)state.best=game.score;
+ save();
+ showModal("Game Over",`<p>${reason}</p><p><b>Score:</b> ${game.score}<br><b>Best:</b> ${state.best}<br><b>Coins:</b> ${state.coins}</p>`,"Play Again","Home",()=>{hideModal();startGame()},home);
+}
+function updateUI(){
+ if(!game)return;
+ $("score").textContent=game.score;$("combo").textContent=game.combo;$("level").textContent=game.level;$("lives").textContent=game.lives;
+}
+function showModal(title,body,main,alt,onMain,onAlt){
+ $("modalTitle").textContent=title;$("modalBody").innerHTML=body;$("modalMain").textContent=main;$("modalAlt").textContent=alt;
+ $("modalMain").onclick=onMain;$("modalAlt").onclick=onAlt;$("modal").classList.remove("hidden");
+}
+function hideModal(){$("modal").classList.add("hidden")}
+function pause(){
+ if(!game)return;
+ game.paused=true;clearInterval(timer);
+ showModal("Paused","<p>Your progress in this round is safe.</p>","Resume","Home",()=>{hideModal();game.paused=false;if(state.mode!=="zen")startTimer()},home);
+}
+function home(){
+ clearInterval(timer);game=null;hideModal();$("game").classList.add("hidden");$("home").classList.remove("hidden");renderHome();
+}
+$("playBtn").onclick=startGame;$("pauseBtn").onclick=pause;$("quitBtn").onclick=home;
+document.querySelectorAll(".mode").forEach(b=>b.onclick=()=>{state.mode=b.dataset.mode;save();renderHome()});
+$("settingsBtn").onclick=()=>$("settingsModal").classList.remove("hidden");
+$("settingsClose").onclick=()=>$("settingsModal").classList.add("hidden");
+$("soundToggle").onclick=()=>{state.sound=!state.sound;$("soundToggle").textContent=state.sound?"ON":"OFF";$("soundToggle").classList.toggle("on",state.sound);save()};
+$("hapticToggle").onclick=()=>{state.haptic=!state.haptic;$("hapticToggle").textContent=state.haptic?"ON":"OFF";$("hapticToggle").classList.toggle("on",state.haptic);save()};
+renderHome();
+})();
 </script>
-</body></html>
+</body>
+</html>
