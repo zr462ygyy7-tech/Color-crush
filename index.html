@@ -1,241 +1,348 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#0d1430">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0b1024">
 <title>Alma Crush</title>
 <style>
 :root{
-  --bg:#080d20;--bg2:#121a3d;--card:#151e3d;--card2:#1b2550;
-  --text:#f7f8ff;--muted:#aeb7d4;--accent:#7c4dff;--accent2:#35c8ff;
-  --good:#31d77a;--bad:#ff4d6d;--gold:#ffd34d;
+  --bg:#080d20;--bg2:#111936;--card:#151e3d;--card2:#1b2649;
+  --text:#f8f9ff;--muted:#aeb8d8;--purple:#7c4dff;--purple2:#5d36e8;
+  --green:#2ed47a;--red:#ff4f6d;--gold:#ffd447;--cyan:#2fc9e8;
+  --shadow:0 18px 50px rgba(0,0,0,.35)
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% 0,#1c2b63 0,#0b1027 42%,#070b19 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% -10%,#26366f 0,#101a3b 34%,var(--bg) 75%);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 body{display:flex;justify-content:center}
 button{font:inherit;color:inherit;border:0;cursor:pointer}
-#app{width:min(760px,100%);padding:18px 16px 42px}
-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.logo{font-size:32px;font-weight:900;letter-spacing:-1.2px}
-.logo span{color:#865cff}
-.iconbtn{width:54px;height:54px;border-radius:17px;background:#ffffff0d;border:1px solid #ffffff18;font-size:25px}
-.panel,.card{background:#ffffff08;border:1px solid #ffffff14;box-shadow:0 14px 50px #0003;border-radius:28px}
-.hero{padding:28px 20px;text-align:center}
-.appicon{width:112px;height:112px;margin:0 auto 18px;border-radius:30px;background:linear-gradient(145deg,#865cff,#25c8ff);display:grid;place-items:center;font-size:48px;font-weight:900;box-shadow:0 15px 45px #7147ff55}
-h1{font-size:46px;line-height:1;margin:6px 0 14px;letter-spacing:-2px}
-.subtitle{font-size:18px;line-height:1.5;color:var(--muted);margin:0 auto 24px;max-width:560px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
-.stat{padding:14px 8px;border-radius:20px;background:#ffffff09;border:1px solid #ffffff12}
-.stat b{display:block;font-size:27px}.stat small{color:var(--muted);font-size:13px}
-.primary{width:100%;padding:17px 20px;border-radius:19px;background:linear-gradient(100deg,#8a5cff,#5c35f2);font-size:20px;font-weight:900;box-shadow:0 12px 35px #6740ff55}
-.section{margin-top:18px;padding:20px}
-.help{display:grid;gap:0}
-.helprow{display:grid;grid-template-columns:48px 1fr;gap:10px;padding:17px 0;border-bottom:1px solid #ffffff10}
-.helprow:last-child{border:0}.emoji{font-size:28px}.helprow b{font-size:18px}.helprow p{margin:5px 0 0;color:var(--muted);line-height:1.4}
-.modes{display:grid;gap:12px;margin-top:18px}
-.mode{padding:18px;border-radius:22px;background:#ffffff06;border:1px solid #ffffff12;text-align:left;display:grid;grid-template-columns:54px 1fr auto;align-items:center;gap:12px}
-.mode.active{border:2px solid #7b4dff;background:#6f46ff0d}.modeicon{font-size:30px}.mode b{display:block;font-size:18px}.mode small{color:var(--muted);display:block;margin-top:4px}.chev{color:var(--muted);font-size:22px}
-.footer{text-align:center;color:#7f8aac;margin:28px 0 0;font-size:13px}
-.hidden{display:none!important}
-#game{padding-bottom:15px}
-.topbar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}
-.gstat{padding:10px 5px;text-align:center;border-radius:17px;background:#ffffff09;border:1px solid #ffffff12}.gstat small{display:block;color:var(--muted);font-size:11px}.gstat b{font-size:21px}
-.progress{height:10px;background:#ffffff0d;border-radius:20px;overflow:hidden;margin:12px 0 18px}.bar{height:100%;width:100%;background:linear-gradient(90deg,#32d77a,#ffd34d,#ff4d6d);transition:width .1s linear}
-.target{padding:24px 15px;text-align:center;margin-bottom:14px}.target small{color:var(--muted);font-weight:800;letter-spacing:.7px}.targetname{font-size:32px;font-weight:900;margin:7px 0 15px}.targetswatch{width:78px;height:78px;border-radius:24px;margin:auto;border:5px solid #ffffff28;box-shadow:0 10px 30px #0004}
-.board{padding:12px;display:grid;gap:12px;background:#ffffff05}.tile{aspect-ratio:1;border-radius:22px;border:3px solid #ffffff15;box-shadow:inset 0 1px #ffffff22,0 8px 18px #0003;transition:transform .08s,filter .15s}.tile:active{transform:scale(.94)}.tile.correct{animation:pop .25s}.tile.wrong{animation:shake .25s;filter:saturate(.6)}
-@keyframes pop{50%{transform:scale(1.08)}}
-@keyframes shake{25%{transform:translateX(-7px)}50%{transform:translateX(7px)}75%{transform:translateX(-4px)}}
-.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.secondary{padding:14px;border-radius:17px;background:#ffffff0b;border:1px solid #ffffff13}
-.message{text-align:center;min-height:25px;color:var(--muted);font-weight:700;margin:10px 0}
-.modal{position:fixed;inset:0;background:#0009;display:grid;place-items:center;padding:18px;z-index:10}
-.modalbox{width:min(520px,100%);padding:24px;border-radius:28px;background:#111936;border:1px solid #ffffff20;box-shadow:0 25px 90px #0009}.modalbox h2{margin-top:0;font-size:28px}
-.row{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #ffffff10}.row:last-of-type{border:0}
-.toggle{padding:9px 14px;border-radius:14px;background:#ffffff12}.toggle.on{background:#35c87f33;color:#5df0a0}
-.close{margin-top:18px}
-@media(max-width:480px){#app{padding:14px 12px 35px}.logo{font-size:29px}h1{font-size:40px}.appicon{width:98px;height:98px;font-size:41px}.hero{padding:23px 15px}.targetname{font-size:29px}.tile{border-radius:17px}.board{gap:9px;padding:9px}}
+#app{width:min(760px,100%);padding:18px 16px 38px;min-height:100vh}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.logo{font-size:34px;font-weight:950;letter-spacing:-1.8px}
+.logo span{color:#8b5cff}
+.iconBtn{width:54px;height:54px;border-radius:17px;background:#ffffff0d;border:1px solid #ffffff18;font-size:24px;box-shadow:var(--shadow)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat{background:#ffffff0b;border:1px solid #ffffff16;border-radius:20px;padding:12px 8px;text-align:center}
+.stat b{display:block;font-size:28px;line-height:1.05}.stat small{color:var(--muted);font-weight:700}
+.progress{height:11px;background:#ffffff0b;border-radius:99px;overflow:hidden;margin:16px 4px}
+#timeBar{height:100%;width:100%;background:linear-gradient(90deg,#2ed47a,#ffd447,#ff4f6d);border-radius:99px;transition:width .08s linear}
+.card{background:#ffffff08;border:1px solid #ffffff16;border-radius:28px;box-shadow:var(--shadow)}
+.target{padding:34px 20px;text-align:center;margin-bottom:14px}
+.target .label{font-weight:900;letter-spacing:1.4px;color:#b9c3df;font-size:18px}
+#targetName{font-size:42px;font-weight:950;margin:8px 0 20px}
+.targetSwatch{width:122px;height:122px;margin:auto;border-radius:32px;border:5px solid #ffffff50;box-shadow:inset 0 5px 0 #ffffff25,0 12px 35px #0006}
+.board{padding:14px;display:grid;gap:10px}
+.tile{width:100%;aspect-ratio:1;border-radius:25px;border:3px solid #ffffff2a;box-shadow:inset 0 6px 0 #ffffff18,0 8px 15px #0005;transition:transform .12s,filter .12s}
+.tile:active{transform:scale(.92)}
+.tile.correct{animation:pop .28s ease}
+.tile.wrong{animation:shake .28s ease;filter:saturate(.55)}
+@keyframes pop{50%{transform:scale(1.12)}}
+@keyframes shake{25%,75%{transform:translateX(-7px)}50%{transform:translateX(7px)}}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.action{min-height:64px;border-radius:21px;background:#ffffff0b;border:1px solid #ffffff18;font-weight:900;font-size:17px}
+.primary{background:linear-gradient(135deg,#8c5cff,#5630e9);box-shadow:0 12px 30px #6335ef55}
+.message{text-align:center;color:#bac4df;font-weight:800;min-height:28px;padding:12px}
+.overlay{position:fixed;inset:0;background:#050918dd;backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:18px;z-index:20}
+.overlay.show{display:flex}
+.modal{width:min(620px,100%);max-height:90vh;overflow:auto;background:linear-gradient(180deg,#182347,#10172e);border:1px solid #ffffff20;border-radius:30px;padding:24px;box-shadow:0 30px 90px #0008}
+.modal h2{margin:0 0 8px;font-size:30px}.modal p{color:var(--muted);line-height:1.5}
+.modalGrid{display:grid;gap:10px}
+.menuBtn{padding:18px;border-radius:19px;background:#ffffff09;border:1px solid #ffffff16;text-align:left;font-weight:850}
+.menuBtn span{display:block;color:var(--muted);font-size:14px;margin-top:4px;font-weight:600}
+.close{float:right;background:#ffffff10;border-radius:13px;padding:9px 12px}
+.homeHero{text-align:center;padding:24px 0 12px}
+.appIcon{width:100px;height:100px;margin:auto;border-radius:27px;background:linear-gradient(135deg,#8c5cff,#26c9eb);display:grid;place-items:center;font-size:43px;font-weight:950;box-shadow:0 18px 45px #4d43ff55}
+.homeHero h1{font-size:48px;margin:18px 0 8px;letter-spacing:-2px}.homeHero h1 span{color:#8b5cff}
+.homeHero .sub{color:var(--muted);font-size:18px}
+.homeStats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.homeStat{padding:14px;border-radius:19px;background:#ffffff09;border:1px solid #ffffff16;text-align:center}.homeStat b{font-size:25px;display:block}
+.bigPlay{width:100%;padding:20px;border-radius:23px;font-size:22px;font-weight:950;background:linear-gradient(135deg,#8d5cff,#5530e8)}
+.info{margin-top:18px;padding:20px}
+.infoRow{padding:16px 0;border-bottom:1px solid #ffffff12}.infoRow:last-child{border:0}.infoRow b{font-size:17px}.infoRow p{margin:5px 0 0;color:var(--muted)}
+.mode{padding:18px;border-radius:20px;background:#ffffff08;border:1px solid #ffffff15}.mode.active{border:2px solid #8b5cff}
+.mode b{font-size:18px}.mode p{margin:5px 0;color:var(--muted)}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between}
+.setting{padding:16px 0;border-bottom:1px solid #ffffff12}.setting:last-child{border:0}
+.toggle{padding:10px 15px;border-radius:14px;background:#ffffff12;font-weight:900}.toggle.on{background:#2ed47a;color:#071527}
+.shopItem{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:16px;border-radius:18px;background:#ffffff08;border:1px solid #ffffff14}
+.buy{padding:11px 15px;border-radius:14px;background:#7c4dff;font-weight:900}.buy:disabled{opacity:.4}
+.toast{position:fixed;left:50%;bottom:25px;transform:translateX(-50%) translateY(20px);background:#182347;border:1px solid #ffffff22;padding:13px 18px;border-radius:15px;opacity:0;pointer-events:none;transition:.25s;z-index:50;font-weight:850}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:480px){
+ #app{padding:14px 12px 28px}.logo{font-size:30px}.stat b{font-size:24px}
+ .target{padding:27px 14px}.targetSwatch{width:105px;height:105px;border-radius:27px}
+ #targetName{font-size:36px}.tile{border-radius:21px}.board{gap:8px;padding:11px}
+ .homeHero h1{font-size:42px}
+}
 </style>
 </head>
 <body>
-<div id="app">
-<header><div class="logo">Alma <span>Crush</span></div><button class="iconbtn" id="settingsBtn" aria-label="Settings">⚙️</button></header>
-
-<section id="home">
-  <div class="panel hero">
-    <div class="appicon">AC</div>
-    <h1>Alma Crush</h1>
-    <p class="subtitle">Beat your best score by finding the target color before time runs out.</p>
-    <div class="stats">
-      <div class="stat"><b id="bestHome">0</b><small>Best</small></div>
-      <div class="stat"><b id="coinsHome">0</b><small>Coins</small></div>
-      <div class="stat"><b id="levelHome">1</b><small>Level</small></div>
-    </div>
-    <button class="primary" id="playBtn">▶ Play Now</button>
-  </div>
-
-  <div class="panel section help">
-    <div class="helprow"><div class="emoji">🎯</div><div><b>How to play</b><p>A target color appears above the board. Tap the only tile that matches it exactly.</p></div></div>
-    <div class="helprow"><div class="emoji">⚡</div><div><b>Build your combo</b><p>Correct answers increase your combo and score. A mistake breaks the combo.</p></div></div>
-    <div class="helprow"><div class="emoji">🏆</div><div><b>Level up</b><p>The board grows and the time gets tighter as you advance.</p></div></div>
-  </div>
-
-  <div class="modes">
-    <button class="mode active" data-mode="classic"><div class="modeicon">🎨</div><div><b>Classic</b><small>Find the matching color. Endless levels.</small></div><div class="chev">›</div></button>
-    <button class="mode" data-mode="rush"><div class="modeicon">⏱️</div><div><b>Time Rush</b><small>60 seconds. Get as many correct answers as possible.</small></div><div class="chev">›</div></button>
-    <button class="mode" data-mode="zen"><div class="modeicon">🧘</div><div><b>Zen</b><small>No timer. Practice at your own pace.</small></div><div class="chev">›</div></button>
-  </div>
-  <div class="footer">Alma Crush • Offline game • Progress is saved on this device</div>
-</section>
-
-<section id="game" class="hidden">
-  <div class="topbar">
-    <div class="gstat"><small>Score</small><b id="score">0</b></div>
-    <div class="gstat"><small>Combo</small><b id="combo">0</b></div>
-    <div class="gstat"><small>Level</small><b id="level">1</b></div>
-    <div class="gstat"><small>Lives</small><b id="lives">3</b></div>
-  </div>
-  <div class="progress"><div id="timebar" class="bar"></div></div>
-  <div class="panel target"><small>FIND THIS COLOR</small><div id="targetName" class="targetname">Blue</div><div id="targetSwatch" class="targetswatch"></div></div>
-  <div id="board" class="panel board"></div>
-  <div id="message" class="message"></div>
-  <div class="controls"><button class="secondary" id="pauseBtn">⏸ Pause</button><button class="secondary" id="quitBtn">⌂ Home</button></div>
-</section>
-
-<div id="modal" class="modal hidden">
- <div class="modalbox">
-   <h2 id="modalTitle">Paused</h2>
-   <div id="modalBody"></div>
-   <button class="primary close" id="modalMain">Continue</button>
-   <button class="secondary close" id="modalAlt">Home</button>
- </div>
-</div>
-
-<div id="settingsModal" class="modal hidden">
- <div class="modalbox">
-  <h2>Settings</h2>
-  <div class="row"><span>Sound</span><button class="toggle on" id="soundToggle">ON</button></div>
-  <div class="row"><span>Haptic feedback</span><button class="toggle on" id="hapticToggle">ON</button></div>
-  <div class="row"><span>Language</span><span>English</span></div>
-  <button class="primary close" id="settingsClose">Done</button>
- </div>
-</div>
-</div>
-
+<div id="app"></div>
+<div id="overlay" class="overlay"><div id="modal" class="modal"></div></div>
+<div id="toast" class="toast"></div>
 <script>
-(() => {
-const COLORS=[
- {name:"Red",hex:"#ff4d68"},{name:"Blue",hex:"#4f7df3"},{name:"Green",hex:"#2ed07d"},
- {name:"Purple",hex:"#965cff"},{name:"Pink",hex:"#f45caf"},{name:"Cyan",hex:"#27c7e9"},
- {name:"Orange",hex:"#ff9f43"},{name:"Yellow",hex:"#ffd34d"}
-];
-const state=JSON.parse(localStorage.getItem("almaCrushState")||"null")||{
- best:0,coins:0,level:1,mode:"classic",sound:true,haptic:true
-};
-let game=null,timer=null;
+"use strict";
 
-const $=id=>document.getElementById(id);
-const save=()=>localStorage.setItem("almaCrushState",JSON.stringify(state));
-const vibrate=p=>{if(state.haptic&&navigator.vibrate)navigator.vibrate(p)};
-function beep(freq=520,dur=.06){
+/* Alma Crush — single-file offline game */
+
+const COLORS=[
+ {name:"Red",hex:"#ff4f6d"},{name:"Orange",hex:"#ff9f43"},{name:"Yellow",hex:"#ffd447"},
+ {name:"Green",hex:"#2ed47a"},{name:"Blue",hex:"#4d7cff"},{name:"Cyan",hex:"#2fc9e8"},
+ {name:"Purple",hex:"#9257ff"},{name:"Pink",hex:"#ee5bb1"}
+];
+
+const defaultState={
+ coins:42,best:0,level:1,lives:3,mode:"classic",sound:true,vibrate:true,
+ music:false, highContrast:false, totalCorrect:0, totalGames:0,
+ unlocked:{timeRush:true,zen:true}, daily:null, achievements:[]
+};
+
+let state=loadState();
+let game=null;
+let timer=null;
+let audioCtx=null;
+
+function loadState(){
+ try{return {...defaultState,...JSON.parse(localStorage.getItem("almaCrushSave")||"{}")};}
+ catch(e){return {...defaultState}}
+}
+function save(){localStorage.setItem("almaCrushSave",JSON.stringify(state))}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function toast(msg){
+ const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");
+ setTimeout(()=>t.classList.remove("show"),1800);
+}
+function beep(freq=500,dur=.07){
  if(!state.sound)return;
- try{const c=new (window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.frequency.value=freq;o.type="sine";g.gain.value=.035;o.connect(g);g.connect(c.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+dur);o.stop(c.currentTime+dur)}catch(e){}
+ try{
+  audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.frequency.value=freq;o.type="sine";g.gain.value=.035;o.connect(g);g.connect(audioCtx.destination);
+  o.start();g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);o.stop(audioCtx.currentTime+dur);
+ }catch(e){}
 }
+function vibrate(ms=25){if(state.vibrate&&navigator.vibrate)navigator.vibrate(ms)}
+
 function renderHome(){
- $("bestHome").textContent=state.best;$("coinsHome").textContent=state.coins;$("levelHome").textContent=state.level;
- document.querySelectorAll(".mode").forEach(x=>x.classList.toggle("active",x.dataset.mode===state.mode));
+ clearInterval(timer);game=null;
+ document.getElementById("app").innerHTML=`
+ <header><div class="logo">Alma <span>Crush</span></div><button class="iconBtn" onclick="openSettings()">⚙️</button></header>
+ <section class="card homeHero">
+  <div class="appIcon">AC</div>
+  <h1>Alma <span>Crush</span></h1>
+  <div class="sub">Train your eyes. Beat your best.</div>
+  <div class="homeStats">
+   <div class="homeStat"><b>${state.best}</b><small>Best</small></div>
+   <div class="homeStat"><b>🪙 ${state.coins}</b><small>Coins</small></div>
+   <div class="homeStat"><b>${state.level}</b><small>Level</small></div>
+  </div>
+  <button class="bigPlay" onclick="startGame('classic')">▶ Play Now</button>
+ </section>
+ <section class="card info">
+  <div class="infoRow"><b>🎯 How to play</b><p>A target color appears above the board. Tap the only tile that matches it exactly.</p></div>
+  <div class="infoRow"><b>⚡ Build your combo</b><p>Correct answers increase your combo and reward more points and coins.</p></div>
+  <div class="infoRow"><b>🏆 Level up</b><p>The board grows and the time gets tighter as you advance.</p></div>
+ </section>
+ <section style="display:grid;gap:10px;margin-top:14px">
+  <button class="mode ${state.mode==="classic"?"active":""}" onclick="startGame('classic')">🎨 <b>Classic</b><p>Find the matching color. Endless levels.</p></button>
+  <button class="mode" onclick="startGame('rush')">⏱️ <b>Time Rush</b><p>60 seconds. Get as many correct answers as possible.</p></button>
+  <button class="mode" onclick="startGame('zen')">🧘 <b>Zen</b><p>No timer and no lives lost. Practice at your own pace.</p></button>
+ </section>
+ <div class="actions">
+  <button class="action" onclick="openShop()">🪙 Shop</button>
+  <button class="action" onclick="openAchievements()">🏆 Achievements</button>
+ </div>
+ <div class="message">Alma Crush • Offline game • Progress is saved on this device</div>`;
 }
-function gridSize(level){
- return level<3?3:level<7?4:level<12?5:6;
+
+function boardSize(level){
+ if(level<4)return 4;if(level<8)return 5;if(level<13)return 6;return 7;
 }
-function roundTime(level){
- if(state.mode==="zen")return Infinity;
- if(state.mode==="rush")return 60000;
- return Math.max(2200,7000-level*250);
+function timeLimit(level,mode){
+ if(mode==="zen")return Infinity;
+ if(mode==="rush")return 60;
+ return Math.max(2.4,6.5-level*.18);
 }
-function startGame(){
- $("home").classList.add("hidden");$("game").classList.remove("hidden");
- game={score:0,combo:0,level:Math.max(1,state.level),lives:3,timeLeft:roundTime(state.level),paused:false};
- nextRound(); updateUI();
+function startGame(mode){
+ state.mode=mode;save();
+ const rush=mode==="rush";
+ game={mode,score:0,combo:0,level:mode==="classic"?Math.max(1,state.level):1,lives:3,
+       left:rush?60:timeLimit(mode==="classic"?Math.max(1,state.level):1,mode),
+       target:null,tiles:[],running:true,started:Date.now(),rushScore:0};
+ renderGame();
+ newRound();
 }
-function nextRound(){
- if(!game)return;
- clearInterval(timer);
- const n=gridSize(game.level), count=n*n;
- const targetIndex=Math.floor(Math.random()*COLORS.length);
- const target=COLORS[targetIndex];
- const tiles=[];
- const other=COLORS.filter((_,i)=>i!==targetIndex);
- const answer=Math.floor(Math.random()*count);
- for(let i=0;i<count;i++)tiles.push(i===answer?target:other[Math.floor(Math.random()*other.length)]);
- game.target=target;game.answer=answer;game.timeLeft=roundTime(game.level);
- $("targetName").textContent=target.name;$("targetSwatch").style.background=target.hex;
- const board=$("board");board.style.gridTemplateColumns=`repeat(${n},1fr)`;board.innerHTML="";
- tiles.forEach((c,i)=>{
-  const b=document.createElement("button");b.className="tile";b.style.background=c.hex;b.dataset.i=i;
-  b.addEventListener("click",()=>pick(i,c===target,b));board.appendChild(b);
- });
- if(state.mode!=="zen") startTimer(); else $("timebar").style.width="100%";
- updateUI();
+function renderGame(){
+ const modeLabel=game.mode==="rush"?"TIME RUSH":game.mode==="zen"?"ZEN":"CLASSIC";
+ document.getElementById("app").innerHTML=`
+ <header><div class="logo">Alma <span>Crush</span></div><button class="iconBtn" onclick="pauseGame()">Ⅱ</button></header>
+ <div class="stats">
+  <div class="stat"><small>Score</small><b id="score">0</b></div>
+  <div class="stat"><small>Combo</small><b id="combo">0</b></div>
+  <div class="stat"><small>Level</small><b id="level">1</b></div>
+  <div class="stat"><small>${game.mode==="rush"?"Time":"Lives"}</small><b id="lives">${game.mode==="rush"?"60":"❤️❤️❤️"}</b></div>
+ </div>
+ <div class="progress"><div id="timeBar"></div></div>
+ <section class="card target">
+   <div class="label">${modeLabel} • FIND THIS COLOR</div>
+   <div id="targetName">—</div>
+   <div id="targetSwatch" class="targetSwatch"></div>
+ </section>
+ <section id="board" class="card board"></section>
+ <div class="actions">
+   <button class="action" onclick="toggleSound()">🔊 <span id="soundText">Sound ON</span></button>
+   <button class="action primary" onclick="restartGame()">↻ Restart</button>
+ </div>
+ <div id="message" class="message">Find the matching color!</div>`;
+ updateHUD();
 }
-function startTimer(){
- const started=performance.now(), total=roundTime(game.level);
- timer=setInterval(()=>{
-  if(!game||game.paused)return;
-  const elapsed=performance.now()-started;game.timeLeft=Math.max(0,total-elapsed);
-  $("timebar").style.width=(game.timeLeft/total*100)+"%";
-  if(game.timeLeft<=0){clearInterval(timer);fail("Time's up!");}
- },50);
+function newRound(){
+ if(!game||!game.running)return;
+ const size=boardSize(game.level), total=size*size;
+ game.target=COLORS[Math.floor(Math.random()*COLORS.length)];
+ let wrong=COLORS.filter(c=>c.name!==game.target.name);
+ let arr=[];
+ for(let i=0;i<total-1;i++)arr.push(wrong[Math.floor(Math.random()*wrong.length)]);
+ const correctIndex=Math.floor(Math.random()*total);
+ arr.splice(correctIndex,0,game.target);
+ game.tiles=arr;
+ const board=document.getElementById("board");
+ board.style.gridTemplateColumns=`repeat(${size},1fr)`;
+ board.innerHTML=arr.map((c,i)=>`<button class="tile" style="background:${c.hex}" onclick="chooseTile(${i})" aria-label="color tile"></button>`).join("");
+ document.getElementById("targetName").textContent=game.target.name;
+ document.getElementById("targetSwatch").style.background=game.target.hex;
+ document.getElementById("message").textContent=`Find the matching ${game.target.name.toLowerCase()}!`;
+ updateHUD();
 }
-function pick(i,correct,el){
- if(!game||game.paused)return;
- if(correct){
-   el.classList.add("correct");game.combo++;
-   const gain=10+game.level*2+Math.min(50,game.combo*2);
-   game.score+=gain;state.coins+=Math.max(1,Math.floor(gain/15));
-   beep(700,.05);vibrate(12);
-   if(game.score>state.best){state.best=game.score}
-   if(game.combo%5===0) game.level++;
-   state.level=Math.max(state.level,game.level);save();
-   $("message").textContent=`+${gain}  •  Great!`;
-   setTimeout(()=>nextRound(),130);
+function chooseTile(i){
+ if(!game||!game.running)return;
+ const tile=document.querySelectorAll(".tile")[i];
+ const chosen=game.tiles[i];
+ if(chosen.name===game.target.name){
+  tile.classList.add("correct"); beep(700,.06);vibrate(18);
+  game.combo++;
+  const base=10+game.level*2;
+  const comboBonus=Math.min(100,game.combo*3);
+  game.score+=base+comboBonus;
+  state.totalCorrect++;
+  if(game.mode==="classic" && game.combo%5===0)game.lives=Math.min(3,game.lives+1);
+  if(game.mode==="classic" && game.score>state.best){state.best=game.score}
+  if(game.mode==="classic"){
+   const old=game.level;game.level=1+Math.floor(game.score/100);
+   if(game.level>old){toast(`Level ${game.level}!`);beep(900,.1)}
+   state.level=Math.max(state.level,game.level);
+  }
+  const coinGain=1+(game.combo%10===0?2:0);
+  state.coins+=coinGain;
+  if(game.mode==="rush")game.rushScore++;
+  save();updateHUD();
+  setTimeout(newRound,100);
  }else{
-   el.classList.add("wrong");game.combo=0;game.lives--;
-   beep(180,.12);vibrate([20,40,20]);
-   $("message").textContent="Wrong tile!";
-   if(game.lives<=0)setTimeout(()=>fail("No lives left"),180); else updateUI();
+  tile.classList.add("wrong");beep(180,.1);vibrate(90);
+  game.combo=0;
+  if(game.mode==="classic"){
+    game.lives--;updateHUD();
+    document.getElementById("message").textContent="❌ Wrong color — combo lost!";
+    if(game.lives<=0){setTimeout(gameOver,180);return}
+  }else{
+    document.getElementById("message").textContent="Try again!";
+  }
  }
 }
-function fail(reason){
- clearInterval(timer);
+function updateHUD(){
+ if(!game)return;
+ const s=document.getElementById("score"),c=document.getElementById("combo"),l=document.getElementById("level"),lv=document.getElementById("lives");
+ if(s)s.textContent=game.score;
+ if(c)c.textContent=game.combo;
+ if(l)l.textContent=game.level;
+ if(lv)lv.textContent=game.mode==="rush"?Math.ceil(game.left):"❤️".repeat(game.lives);
+ const bar=document.getElementById("timeBar");
+ if(bar){
+  if(game.mode==="zen"){bar.style.width="100%";bar.style.background="#2ed47a"}
+  else{
+   const max=game.mode==="rush"?60:timeLimit(game.level,game.mode);
+   bar.style.width=Math.max(0,Math.min(100,game.left/max*100))+"%";
+  }
+ }
+ const st=document.getElementById("soundText");if(st)st.textContent=state.sound?"Sound ON":"Sound OFF";
+}
+function tick(){
+ if(!game||!game.running)return;
+ if(game.mode==="zen")return;
+ game.left-=.1;
+ updateHUD();
+ if(game.left<=0){game.left=0;gameOver()}
+}
+function restartGame(){startGame(game?game.mode:"classic")}
+function pauseGame(){
+ if(!game)return;
+ game.running=!game.running;
+ if(game.running){startTimer();closeModal()}
+ else{clearInterval(timer);showModal(`<h2>⏸️ Paused</h2><p>Take a breath. Your game is waiting.</p><button class="bigPlay" onclick="pauseGame()">▶ Continue</button>`)}
+}
+function startTimer(){clearInterval(timer);timer=setInterval(tick,100)}
+function gameOver(){
+ if(!game)return;
+ game.running=false;clearInterval(timer);
+ state.totalGames++;
  if(game.score>state.best)state.best=game.score;
- save();
- showModal("Game Over",`<p>${reason}</p><p><b>Score:</b> ${game.score}<br><b>Best:</b> ${state.best}<br><b>Coins:</b> ${state.coins}</p>`,"Play Again","Home",()=>{hideModal();startGame()},home);
+ state.level=Math.max(state.level,game.level);save();
+ showModal(`<h2>${game.mode==="rush"?"⏱️ Time's up!":"💔 Game Over"}</h2>
+ <p>${game.mode==="rush"?"Great run!":"You used all your lives."}</p>
+ <div class="homeStats">
+  <div class="homeStat"><b>${game.score}</b><small>Score</small></div>
+  <div class="homeStat"><b>${game.combo}</b><small>Combo</small></div>
+  <div class="homeStat"><b>🏆 ${state.best}</b><small>Best</small></div>
+ </div>
+ <button class="bigPlay" onclick="startGame('${game.mode}')">↻ Play Again</button>
+ <button class="menuBtn" style="width:100%;margin-top:10px" onclick="renderHome();closeModal()">⌂ Home</button>`);
 }
-function updateUI(){
- if(!game)return;
- $("score").textContent=game.score;$("combo").textContent=game.combo;$("level").textContent=game.level;$("lives").textContent=game.lives;
+function toggleSound(){state.sound=!state.sound;save();beep(650,.05);updateHUD()}
+function showModal(content){document.getElementById("modal").innerHTML=content;document.getElementById("overlay").classList.add("show")}
+function closeModal(){document.getElementById("overlay").classList.remove("show")}
+document.getElementById("overlay").addEventListener("click",e=>{if(e.target.id==="overlay")closeModal()});
+
+function openSettings(){
+ showModal(`<button class="close" onclick="closeModal()">✕</button><h2>⚙️ Settings</h2>
+ <div class="setting row"><div><b>🔊 Sound</b><p>Game sounds</p></div><button class="toggle ${state.sound?"on":""}" onclick="state.sound=!state.sound;save();openSettings()"> ${state.sound?"ON":"OFF"} </button></div>
+ <div class="setting row"><div><b>📳 Vibration</b><p>Touch feedback</p></div><button class="toggle ${state.vibrate?"on":""}" onclick="state.vibrate=!state.vibrate;save();openSettings()"> ${state.vibrate?"ON":"OFF"} </button></div>
+ <div class="setting row"><div><b>🔆 High contrast</b><p>Stronger tile borders</p></div><button class="toggle ${state.highContrast?"on":""}" onclick="state.highContrast=!state.highContrast;save();openSettings()"> ${state.highContrast?"ON":"OFF"} </button></div>
+ <button class="menuBtn" style="width:100%;margin-top:12px" onclick="confirmReset()">🗑️ Reset all progress<span>This cannot be undone.</span></button>`);
 }
-function showModal(title,body,main,alt,onMain,onAlt){
- $("modalTitle").textContent=title;$("modalBody").innerHTML=body;$("modalMain").textContent=main;$("modalAlt").textContent=alt;
- $("modalMain").onclick=onMain;$("modalAlt").onclick=onAlt;$("modal").classList.remove("hidden");
+function confirmReset(){
+ showModal(`<h2>Reset progress?</h2><p>This will erase coins, scores, levels and achievements on this device.</p>
+ <div class="actions"><button class="action" onclick="openSettings()">Cancel</button><button class="action" style="background:#ff4f6d" onclick="resetAll()">Reset</button></div>`);
 }
-function hideModal(){$("modal").classList.add("hidden")}
-function pause(){
- if(!game)return;
- game.paused=true;clearInterval(timer);
- showModal("Paused","<p>Your progress in this round is safe.</p>","Resume","Home",()=>{hideModal();game.paused=false;if(state.mode!=="zen")startTimer()},home);
+function resetAll(){localStorage.removeItem("almaCrushSave");state={...defaultState};closeModal();renderHome();toast("Progress reset")}
+function openShop(){
+ const items=[
+  ["life","❤️ Extra Life","Start your next Classic game with +1 life",25],
+  ["double","⚡ Double Coins","Earn extra coins for 10 correct answers",60],
+  ["theme","✨ Premium Glow","A cosmetic unlock for your profile",100]
+ ];
+ showModal(`<button class="close" onclick="closeModal()">✕</button><h2>🪙 Shop</h2><p>You have <b>🪙 ${state.coins}</b> coins.</p>
+ <div class="modalGrid">${items.map(x=>`<div class="shopItem"><div><b>${x[1]}</b><p>${x[2]}</p></div><button class="buy" ${state.coins<x[3]?"disabled":""} onclick="buyItem('${x[0]}',${x[3]})">🪙 ${x[3]}</button></div>`).join("")}</div>`);
 }
-function home(){
- clearInterval(timer);game=null;hideModal();$("game").classList.add("hidden");$("home").classList.remove("hidden");renderHome();
+function buyItem(type,cost){
+ if(state.coins<cost)return;
+ state.coins-=cost;
+ if(type==="life")state.livesBonus=(state.livesBonus||0)+1;
+ if(type==="double")state.doubleCoinsUntil=(state.totalCorrect||0)+10;
+ if(type==="theme")state.glow=true;
+ save();toast("Purchased!");openShop();
 }
-$("playBtn").onclick=startGame;$("pauseBtn").onclick=pause;$("quitBtn").onclick=home;
-document.querySelectorAll(".mode").forEach(b=>b.onclick=()=>{state.mode=b.dataset.mode;save();renderHome()});
-$("settingsBtn").onclick=()=>$("settingsModal").classList.remove("hidden");
-$("settingsClose").onclick=()=>$("settingsModal").classList.add("hidden");
-$("soundToggle").onclick=()=>{state.sound=!state.sound;$("soundToggle").textContent=state.sound?"ON":"OFF";$("soundToggle").classList.toggle("on",state.sound);save()};
-$("hapticToggle").onclick=()=>{state.haptic=!state.haptic;$("hapticToggle").textContent=state.haptic?"ON":"OFF";$("hapticToggle").classList.toggle("on",state.haptic);save()};
-renderHome();
-})();
+function openAchievements(){
+ const achievements=[
+  ["first","🎯 First Crush","Get your first correct answer",state.totalCorrect>=1],
+  ["combo10","⚡ Combo 10","Reach a combo of 10",game&&game.combo>=10],
+  ["score500","🏆 Score 500","Reach 500 points in one game",state.best>=500],
+  ["level10","🚀 Level 10","Reach level 10",state.level>=10],
+  ["coins100","🪙 Coin Collector","Collect 100 coins",state.coins>=100]
+ ];
+ showModal(`<button class="close" onclick="closeModal()">✕</button><h2>🏆 Achievements</h2>
+ <div class="modalGrid">${achievements.map(a=>`<div class="shopItem" style="opacity:${a[3]?1:.45}"><div><b>${a[1]}</b><p>${a[2]}</p></div><b>${a[3]?"✓":"🔒"}</b></div>`).join("")}</div>`);
+}
+window.addEventListener("load",renderHome);
 </script>
 </body>
 </html>
