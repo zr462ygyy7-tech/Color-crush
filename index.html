@@ -1,416 +1,80 @@
-<!doctype html>
-<html lang="en" dir="ltr">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#111827">
-<meta name="description" content="Alma Crush - a fast color recognition puzzle game">
+<meta name="theme-color" content="#111936">
 <title>Alma Crush</title>
 <style>
-:root{
-  --bg:#0b1020;--panel:#151c32;--panel2:#1d2742;--text:#f7f8ff;--muted:#aab3ca;
-  --accent:#7c5cff;--good:#31d07c;--bad:#ff5d73;--gold:#ffc857;
-  --shadow:0 18px 50px rgba(0,0,0,.28);--radius:24px;
-}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;min-height:100%;background:radial-gradient(circle at 20% 0%,#26335f 0,#0b1020 42%,#070b15 100%);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
-body{display:flex;justify-content:center}
-button{font:inherit;border:0;cursor:pointer}
-#app{width:min(100%,620px);min-height:100vh;padding:18px 14px 28px;display:flex;flex-direction:column}
-.screen{display:none;animation:in .22s ease}
-.screen.active{display:block}
-@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
-.brand{font-weight:900;font-size:25px;letter-spacing:.3px}
-.brand span{color:var(--accent)}
-.iconBtn{width:44px;height:44px;border-radius:14px;background:#ffffff12;color:#fff;border:1px solid #ffffff15}
-.hero{background:linear-gradient(145deg,#1a2441,#11172b);border:1px solid #ffffff12;border-radius:32px;padding:28px 20px;box-shadow:var(--shadow);text-align:center}
-.logo{width:88px;height:88px;margin:0 auto 16px;border-radius:28px;background:linear-gradient(135deg,#7c5cff,#27d8ff);display:grid;place-items:center;font-size:38px;font-weight:1000;box-shadow:0 14px 40px #7c5cff55}
-h1{font-size:42px;line-height:1;margin:0 0 10px}
-h2{margin:0 0 8px;font-size:26px}
-p{color:var(--muted);line-height:1.55;margin:8px 0}
-.cta{width:100%;padding:16px 18px;border-radius:17px;background:linear-gradient(135deg,#8b72ff,#5b42e8);color:white;font-weight:900;font-size:18px;box-shadow:0 10px 24px #6b4ff044}
-.secondary{background:#ffffff10;border:1px solid #ffffff16;box-shadow:none}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.card{background:#ffffff08;border:1px solid #ffffff10;border-radius:20px;padding:16px}
-.feature{display:flex;gap:12px;text-align:left;align-items:flex-start}
-.feature b{display:block;margin-bottom:3px}
-.feature .ico{font-size:25px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
-.stat{background:#ffffff09;border:1px solid #ffffff0c;border-radius:17px;padding:12px;text-align:center}
-.stat strong{display:block;font-size:21px}.stat small{color:var(--muted)}
-.badge{display:inline-flex;padding:7px 11px;border-radius:999px;background:#ffc85718;color:var(--gold);font-weight:800;font-size:12px}
-.divider{height:1px;background:#ffffff10;margin:16px 0}
-.modes{display:grid;gap:10px;margin-top:14px}
-.mode{display:flex;align-items:center;gap:12px;text-align:left;padding:16px;border-radius:20px;background:#ffffff08;border:1px solid #ffffff10;color:#fff}
-.mode.active{outline:2px solid var(--accent);background:#7c5cff18}
-.mode .big{font-size:30px}.mode b{display:block}.mode small{color:var(--muted)}
-.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:12px}
-.hudBox{background:#ffffff0b;border:1px solid #ffffff10;border-radius:15px;padding:9px 5px;text-align:center}
-.hudBox small{display:block;color:var(--muted);font-size:10px}.hudBox b{font-size:18px}
-.timer{height:8px;background:#ffffff10;border-radius:99px;overflow:hidden;margin:0 2px 15px}
-#timeFill{height:100%;width:100%;background:linear-gradient(90deg,#31d07c,#ffc857,#ff5d73);transition:width .1s linear}
-.target{background:linear-gradient(145deg,#151d35,#0f1528);border:1px solid #ffffff12;border-radius:24px;padding:18px;text-align:center;margin-bottom:12px}
-.targetLabel{font-size:13px;color:var(--muted);font-weight:800}
-.targetName{font-size:26px;font-weight:950;margin:4px 0 12px}
-.targetSwatch{width:70px;height:70px;border-radius:22px;margin:auto;box-shadow:inset 0 0 0 4px #ffffff28,0 10px 28px #0006}
-#board{display:grid;gap:9px;background:#ffffff07;border:1px solid #ffffff10;padding:10px;border-radius:24px}
-.tile{border-radius:18px;min-height:58px;aspect-ratio:1;box-shadow:inset 0 0 0 2px #ffffff20,0 7px 15px #0004;transition:transform .12s,filter .12s}
-.tile:active{transform:scale(.92)}
-.tile.correct{animation:correct .35s ease}
-.tile.wrong{animation:wrong .28s ease}
-@keyframes correct{50%{transform:scale(1.12);filter:brightness(1.3)}}
-@keyframes wrong{25%,75%{transform:translateX(7px)}50%{transform:translateX(-7px)}}
-.gameActions{display:flex;gap:9px;margin-top:12px}
-.gameActions button{flex:1;padding:13px;border-radius:15px;background:#ffffff0c;color:#fff;border:1px solid #ffffff10}
-.result{text-align:center}
-.resultScore{font-size:64px;font-weight:1000;line-height:1;margin:15px 0 5px}
-.resultMessage{font-size:20px;font-weight:850}
-.medal{font-size:70px}
-.table{display:grid;gap:8px;margin-top:12px}
-.row{display:flex;justify-content:space-between;gap:10px;padding:12px 14px;background:#ffffff08;border-radius:14px}
-.row span:last-child{font-weight:900}
-.switch{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 0}
-.toggle{width:52px;height:30px;border-radius:99px;background:#ffffff20;padding:3px}
-.toggle i{display:block;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}
-.toggle.on{background:var(--accent)}.toggle.on i{transform:translateX(22px)}
-.footer{text-align:center;color:#77819a;font-size:11px;margin-top:18px}
-.hidden{display:none!important}
-@media(min-width:500px){#app{padding-top:28px}.hero{padding:38px}.tile{min-height:76px}}
+:root{--bg:#0d1430;--card:#151e3d;--text:#f7f8ff;--muted:#aeb7d4}
+html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at top,#25315f,#111936 42%,#090e21);color:var(--text)}
+body{display:flex;justify-content:center}button{font:inherit;color:inherit;border:0;cursor:pointer}
+#app{width:min(760px,100%);padding:18px 16px 34px}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.logo{font-size:34px;font-weight:900;letter-spacing:-1.5px}.logo span{color:#8b5cff}
+.icon{width:48px;height:48px;border-radius:15px;background:#ffffff10;border:1px solid #ffffff1c;display:grid;place-items:center;font-size:22px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.stat{background:#ffffff0c;border:1px solid #ffffff16;border-radius:17px;padding:10px 6px;text-align:center}.stat small{display:block;color:var(--muted);font-size:12px}.stat b{font-size:23px}
+.progress{height:10px;background:#ffffff0d;border-radius:99px;margin:16px 2px;overflow:hidden}
+#bar{height:100%;width:100%;background:linear-gradient(90deg,#2dd881,#ffd34d,#ff4f71);border-radius:99px}
+.card{background:#ffffff08;border:1px solid #ffffff16;border-radius:27px;box-shadow:0 18px 50px #0003}
+.target{padding:25px 20px 27px;text-align:center;margin-bottom:16px}.target h3{margin:0;color:var(--muted);font-size:16px;letter-spacing:.7px}
+#targetName{font-size:34px;font-weight:900;margin:8px 0 16px}.targetDot{width:82px;height:82px;border-radius:25px;margin:auto;border:6px solid #ffffff35;box-shadow:0 10px 25px #0005}
+.board{padding:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+.tile{aspect-ratio:1;border-radius:22px;border:3px solid #ffffff18;box-shadow:inset 0 1px #ffffff25,0 7px 15px #0004;transition:transform .12s}.tile:active{transform:scale(.91)}
+.tile.correct{animation:pop .34s ease}.tile.wrong{animation:shake .32s ease}
+@keyframes pop{50%{transform:scale(1.12);filter:brightness(1.3)}}@keyframes shake{25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-5px)}}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.action{padding:15px;border-radius:16px;background:#ffffff0c;border:1px solid #ffffff16;font-weight:800}.action.primary{background:linear-gradient(135deg,#7658ff,#9a5cff)}
+.message{text-align:center;color:var(--muted);min-height:25px;margin:12px 0 0;font-size:14px}
+.overlay{position:fixed;inset:0;background:#05091ad9;backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:22px;z-index:20}
+.modal{width:min(500px,100%);background:#151e3d;border:1px solid #ffffff1b;border-radius:28px;padding:28px;text-align:center;box-shadow:0 30px 80px #0008}.modal h1{font-size:34px;margin:0 0 8px}
+.modal p{color:var(--muted);line-height:1.6}.modal .big{font-size:50px;font-weight:900;margin:10px 0}.modal button{width:100%;padding:15px;border-radius:16px;background:linear-gradient(135deg,#7658ff,#a05cff);font-weight:900;margin-top:10px}
+.help{text-align:left;background:#ffffff08;border-radius:18px;padding:15px;margin:15px 0;color:#dbe0f5}.help b{color:white}
+@media(max-width:430px){#app{padding:13px 12px 28px}.logo{font-size:29px}.stats{gap:6px}.stat{padding:8px 3px}.stat b{font-size:20px}.target{padding:21px 12px}.board{padding:11px;gap:9px}.tile{border-radius:18px}}
 </style>
 </head>
 <body>
 <div id="app">
-
-<section id="home" class="screen active">
-  <div class="topbar">
-    <div class="brand">Alma <span>Crush</span></div>
-    <button class="iconBtn" id="settingsBtn" aria-label="Settings">⚙️</button>
-  </div>
-  <div class="hero">
-    <div class="logo">AC</div>
-    <h1>Alma Crush</h1>
-    <p id="bestLine">Beat your best score by finding the target color before time runs out.</p>
-    <div class="stats">
-      <div class="stat"><strong id="homeBest">0</strong><small>Best</small></div>
-      <div class="stat"><strong id="homeCoins">0</strong><small>Coins</small></div>
-      <div class="stat"><strong id="homeLevel">1</strong><small>Level</small></div>
-    </div>
-    <button class="cta" id="playBtn">▶ Play Now</button>
-  </div>
-
-  <div class="card" style="margin-top:12px">
-    <div class="feature"><div class="ico">🎯</div><div><b>How to play</b><span style="color:var(--muted)">A target color appears above the board. Tap the only tile that matches it exactly.</span></div></div>
-    <div class="divider"></div>
-    <div class="feature"><div class="ico">⚡</div><div><b>Build your combo</b><span style="color:var(--muted)">Correct answers increase your combo and score. A mistake breaks the combo.</span></div></div>
-    <div class="divider"></div>
-    <div class="feature"><div class="ico">🏆</div><div><b>Level up</b><span style="color:var(--muted)">The board grows and the time gets tighter as you advance.</span></div></div>
-  </div>
-
-  <div class="modes">
-    <button class="mode active" data-mode="classic"><div class="big">🎨</div><div><b>Classic</b><small>Find the matching color. Endless levels.</small></div></button>
-    <button class="mode" data-mode="time"><div class="big">⏱️</div><div><b>Time Rush</b><small>60 seconds. Get as many correct answers as possible.</small></div></button>
-    <button class="mode" data-mode="zen"><div class="big">🧘</div><div><b>Zen</b><small>No timer. Practice at your own pace.</small></div></button>
-  </div>
-  <div class="footer">Alma Crush • Offline game • Progress is saved on this device</div>
+<header><div class="logo">Alma <span>Crush</span></div><button class="icon" id="pauseBtn">Ⅱ</button></header>
+<section class="stats">
+<div class="stat"><small>Score</small><b id="score">0</b></div><div class="stat"><small>Combo</small><b id="combo">0</b></div><div class="stat"><small>Level</small><b id="level">1</b></div><div class="stat"><small>Lives</small><b id="lives">3</b></div>
 </section>
-
-<section id="game" class="screen">
-  <div class="topbar">
-    <div class="brand">Alma <span>Crush</span></div>
-    <button class="iconBtn" id="pauseBtn">Ⅱ</button>
-  </div>
-  <div class="hud">
-    <div class="hudBox"><small>Score</small><b id="score">0</b></div>
-    <div class="hudBox"><small>Combo</small><b id="combo">0</b></div>
-    <div class="hudBox"><small>Level</small><b id="level">1</b></div>
-    <div class="hudBox"><small>Lives</small><b id="lives">3</b></div>
-  </div>
-  <div class="timer" id="timerWrap"><div id="timeFill"></div></div>
-  <div class="target">
-    <div class="targetLabel">FIND THIS COLOR</div>
-    <div class="targetName" id="targetName">Target</div>
-    <div class="targetSwatch" id="targetSwatch"></div>
-  </div>
-  <div id="board"></div>
-  <div class="gameActions">
-    <button id="restartBtn">↻ Restart</button>
-    <button id="homeBtn">⌂ Home</button>
-  </div>
-</section>
-
-<section id="result" class="screen">
-  <div class="topbar"><div class="brand">Alma <span>Crush</span></div></div>
-  <div class="hero result">
-    <div class="medal" id="medal">🏆</div>
-    <h2 id="resultTitle">Great game!</h2>
-    <div class="resultScore" id="finalScore">0</div>
-    <div class="resultMessage" id="resultMessage">Score</div>
-    <div class="stats">
-      <div class="stat"><strong id="finalLevel">1</strong><small>Level</small></div>
-      <div class="stat"><strong id="finalCombo">0</strong><small>Best Combo</small></div>
-      <div class="stat"><strong id="finalCoins">0</strong><small>Coins Earned</small></div>
-    </div>
-    <div class="table">
-      <div class="row"><span>Mode</span><span id="finalMode">Classic</span></div>
-      <div class="row"><span>Correct</span><span id="finalCorrect">0</span></div>
-      <div class="row"><span>Wrong</span><span id="finalWrong">0</span></div>
-    </div>
-    <button class="cta" id="againBtn" style="margin-top:14px">▶ Play Again</button>
-    <button class="cta secondary" id="resultHomeBtn" style="margin-top:9px">⌂ Main Menu</button>
-  </div>
-</section>
-
-<section id="settings" class="screen">
-  <div class="topbar">
-    <button class="iconBtn" id="settingsBack">←</button>
-    <div class="brand">Settings</div><div style="width:44px"></div>
-  </div>
-  <div class="card">
-    <h2>Game settings</h2>
-    <div class="switch"><div><b>Sound effects</b><p>Tap, success and error sounds.</p></div><button class="toggle on" id="soundToggle"><i></i></button></div>
-    <div class="switch"><div><b>Vibration</b><p>Haptic feedback on supported phones.</p></div><button class="toggle on" id="vibeToggle"><i></i></button></div>
-    <div class="switch"><div><b>High contrast</b><p>Makes tile differences easier to see.</p></div><button class="toggle" id="contrastToggle"><i></i></button></div>
-  </div>
-  <div class="card" style="margin-top:12px">
-    <h2>Progress</h2>
-    <p>Your best score, coins and level are stored locally on this device.</p>
-    <button class="cta secondary" id="resetProgress">Reset progress</button>
-  </div>
-  <div class="card" style="margin-top:12px">
-    <h2>About Alma Crush</h2>
-    <p>Alma Crush is designed as a simple, fast and replayable color-recognition game. The complete game logic, interface, settings and saved progress are contained in this single HTML file.</p>
-  </div>
-</section>
-
-<div id="pauseOverlay" class="hidden" style="position:fixed;inset:0;background:#050813dd;backdrop-filter:blur(10px);z-index:20;display:grid;place-items:center;padding:20px">
-  <div class="hero" style="width:min(100%,430px)">
-    <div style="font-size:55px">⏸️</div><h2>Paused</h2><p>Take a breath. Your game is waiting.</p>
-    <button class="cta" id="resumeBtn">▶ Resume</button>
-    <button class="cta secondary" id="quitBtn" style="margin-top:9px">Quit to Menu</button>
-  </div>
+<div class="progress"><div id="bar"></div></div>
+<section class="card target"><h3>FIND THIS COLOR</h3><div id="targetName">Blue</div><div class="targetDot" id="targetDot"></div></section>
+<section class="card board" id="board"></section>
+<div class="controls"><button class="action" id="soundBtn">🔊 Sound ON</button><button class="action primary" id="restartBtn">↻ Restart</button></div>
+<div class="message" id="message">Tap the tile that matches the color shown above.</div>
 </div>
-</div>
-
+<div class="overlay" id="overlay"><div class="modal">
+<h1 id="modalTitle">Welcome to Alma Crush</h1><div class="big" id="modalScore">🎨</div><p id="modalText"></p>
+<div class="help" id="helpBox"><b>How to play</b><br>Look at the color shown at the top, then tap the matching tile.<br>Correct answers increase your combo and score. Wrong answers cost a life. The timer gets harder as you level up.</div>
+<button id="modalBtn">Start Game</button>
+</div></div>
 <script>
-(() => {
 "use strict";
-
-const COLORS = [
-  {name:"Red",hex:"#ff4d67"},{name:"Orange",hex:"#ff8a3d"},{name:"Yellow",hex:"#ffd34d"},
-  {name:"Green",hex:"#31d07c"},{name:"Cyan",hex:"#27d8ff"},{name:"Blue",hex:"#4d7cff"},
-  {name:"Purple",hex:"#9a63ff"},{name:"Pink",hex:"#ff63b4"}
-];
-
-const $ = id => document.getElementById(id);
-const screens = ["home","game","result","settings"];
-let mode = localStorage.getItem("alma_mode") || "classic";
-let sound = localStorage.getItem("alma_sound") !== "0";
-let vibe = localStorage.getItem("alma_vibe") !== "0";
-let contrast = localStorage.getItem("alma_contrast") === "1";
-let state = null, timer = null, audioCtx = null;
-
-const saved = () => JSON.parse(localStorage.getItem("alma_save") || '{"best":0,"coins":0,"level":1}');
-const save = o => localStorage.setItem("alma_save", JSON.stringify(o));
-
-function show(name){
-  screens.forEach(s => $(s).classList.toggle("active",s===name));
-  window.scrollTo(0,0);
-}
-function beep(freq,dur=.06,type="sine"){
-  if(!sound) return;
-  try{
-    audioCtx ||= new (window.AudioContext||window.webkitAudioContext)();
-    const o=audioCtx.createOscillator(), g=audioCtx.createGain();
-    o.type=type;o.frequency.value=freq;g.gain.value=.045;o.connect(g);g.connect(audioCtx.destination);
-    o.start();g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);o.stop(audioCtx.currentTime+dur);
-  }catch(e){}
-}
-function buzz(ms=20){ if(vibe && navigator.vibrate) navigator.vibrate(ms); }
-
-function updateHome(){
-  const s=saved();
-  $("homeBest").textContent=s.best;
-  $("homeCoins").textContent=s.coins;
-  $("homeLevel").textContent=s.level;
-  document.querySelectorAll(".mode").forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));
-}
-function modeName(){return mode==="classic"?"Classic":mode==="time"?"Time Rush":"Zen"}
-
-function setupGame(){
-  clearInterval(timer);
-  const baseLevel = mode==="classic" ? Math.max(1,saved().level) : 1;
-  state={
-    score:0,combo:0,bestCombo:0,level:baseLevel,lives:mode==="zen"?999:3,
-    correct:0,wrong:0,coins:0,round:0,time:mode==="time"?60:mode==="zen"?0:10,
-    maxTime:mode==="time"?60:mode==="zen"?0:10,paused:false,target:null
-  };
-  show("game"); nextRound();
-}
-function boardSize(){
-  if(mode==="time") return Math.min(6,3+Math.floor(state.correct/5));
-  return Math.min(7,3+Math.floor((state.level-1)/2));
-}
-function roundTime(){
-  if(mode==="zen") return 0;
-  if(mode==="time") return Math.max(3.2,5.5-state.level*.15);
-  return Math.max(2.6,10-(state.level-1)*.45);
-}
-function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-
-function nextRound(){
-  clearInterval(timer);
-  state.round++;
-  const size=boardSize(), total=size*size;
-  const target=COLORS[Math.floor(Math.random()*COLORS.length)];
-  state.target=target;
-  $("targetName").textContent=target.name;
-  $("targetSwatch").style.background=target.hex;
-  const board=$("board");
-  board.innerHTML="";
-  board.style.gridTemplateColumns=`repeat(${size},1fr)`;
-
-  const others=shuffle(COLORS.filter(c=>c.hex!==target.hex)).slice(0,Math.min(5,COLORS.length-1));
-  let tiles=[];
-  for(let i=0;i<total;i++) tiles.push(others[i%others.length]);
-  const correctIndex=Math.floor(Math.random()*total);
-  tiles[correctIndex]=target;
-  shuffle(tiles);
-
-  tiles.forEach((c,i)=>{
-    const b=document.createElement("button");
-    b.className="tile";
-    b.style.background=c.hex;
-    b.setAttribute("aria-label",`Color tile ${i+1}`);
-    b.addEventListener("click",()=>pick(b,c));
-    board.appendChild(b);
-  });
-
-  state.maxTime=roundTime();
-  state.time=state.maxTime;
-  $("timerWrap").classList.toggle("hidden",mode==="zen");
-  updateHud();
-
-  if(mode!=="zen"){
-    const start=performance.now();
-    timer=setInterval(()=>{
-      if(state.paused)return;
-      const elapsed=(performance.now()-start)/1000;
-      state.time=state.maxTime-elapsed;
-      updateTime();
-      if(state.time<=0){
-        clearInterval(timer);
-        failRound(true);
-      }
-    },80);
-  } else updateTime();
-}
-function updateTime(){
-  if(mode==="zen"){ $("timeFill").style.width="100%"; return; }
-  $("timeFill").style.width=Math.max(0,Math.min(100,state.time/state.maxTime*100))+"%";
-}
-function updateHud(){
-  $("score").textContent=state.score;
-  $("combo").textContent=state.combo;
-  $("level").textContent=state.level;
-  $("lives").textContent=mode==="zen"?"∞":state.lives;
-  updateTime();
-}
-function pick(btn,color){
-  if(state.paused)return;
-  if(color.hex===state.target.hex){
-    btn.classList.add("correct"); beep(650,.07); buzz(12);
-    state.correct++;state.combo++;state.bestCombo=Math.max(state.bestCombo,state.combo);
-    const speedBonus=mode==="zen"?10:Math.max(2,Math.ceil(state.time*2));
-    const comboBonus=Math.min(50,state.combo*3);
-    state.score+=10+speedBonus+comboBonus;
-    state.coins+=Math.max(1,Math.floor(state.combo/5)+1);
-    if(state.correct%5===0) state.level++;
-    updateHud();
-    setTimeout(nextRound,110);
-  }else{
-    btn.classList.add("wrong"); beep(150,.09,"square"); buzz(70);
-    state.wrong++;state.combo=0;
-    if(mode!=="zen")state.lives--;
-    updateHud();
-    if(mode!=="zen" && state.lives<=0){clearInterval(timer);setTimeout(()=>endGame("No lives left"),180)}
-  }
-}
-function failRound(){
-  state.wrong++;state.combo=0;
-  if(mode!=="zen")state.lives--;
-  beep(120,.1,"square");buzz(80);updateHud();
-  if(mode!=="zen" && state.lives<=0) endGame("Time ran out");
-  else setTimeout(nextRound,150);
-}
-function endGame(reason){
-  clearInterval(timer);
-  const old=saved(), isNew=state.score>old.best;
-  save({best:Math.max(old.best,state.score),coins:old.coins+state.coins,level:Math.max(old.level,state.level)});
-  $("finalScore").textContent=state.score;
-  $("finalLevel").textContent=state.level;
-  $("finalCombo").textContent=state.bestCombo;
-  $("finalCoins").textContent=state.coins;
-  $("finalMode").textContent=modeName();
-  $("finalCorrect").textContent=state.correct;
-  $("finalWrong").textContent=state.wrong;
-  $("resultTitle").textContent=isNew?"New Best!":"Game Over";
-  $("resultMessage").textContent=isNew?"You set a new personal record.":reason;
-  $("medal").textContent=state.score>=500?"🏆":state.score>=250?"🥇":state.score>=100?"🥈":"🎮";
-  beep(isNew?900:300,.12);
-  show("result");
-  updateHome();
-}
-function pauseGame(){
-  state.paused=true;clearInterval(timer);$("pauseOverlay").classList.remove("hidden");
-}
-function resumeGame(){
-  $("pauseOverlay").classList.add("hidden");state.paused=false;
-  if(mode!=="zen"){
-    // Preserve the remaining time and continue from the current value.
-    const remaining=Math.max(0,state.time), start=performance.now();
-    clearInterval(timer);
-    timer=setInterval(()=>{
-      if(state.paused)return;
-      state.time=remaining-(performance.now()-start)/1000;
-      updateTime();
-      if(state.time<=0){clearInterval(timer);failRound(true)}
-    },80);
-  }
-}
-
-$("playBtn").onclick=setupGame;
-$("againBtn").onclick=setupGame;
-$("homeBtn").onclick=()=>{clearInterval(timer);show("home");updateHome()};
-$("resultHomeBtn").onclick=()=>{show("home");updateHome()};
-$("restartBtn").onclick=setupGame;
-$("pauseBtn").onclick=pauseGame;
-$("resumeBtn").onclick=resumeGame;
-$("quitBtn").onclick=()=>{clearInterval(timer);$("pauseOverlay").classList.add("hidden");show("home");updateHome()};
-$("settingsBtn").onclick=()=>{show("settings");syncSettings()};
-$("settingsBack").onclick=()=>{show("home");updateHome()};
-
-document.querySelectorAll(".mode").forEach(b=>b.onclick=()=>{
-  mode=b.dataset.mode;localStorage.setItem("alma_mode",mode);updateHome();beep(500,.04)
-});
-
-function syncSettings(){
-  $("soundToggle").classList.toggle("on",sound);
-  $("vibeToggle").classList.toggle("on",vibe);
-  $("contrastToggle").classList.toggle("on",contrast);
-  document.body.style.filter=contrast?"contrast(1.12)":"none";
-}
-$("soundToggle").onclick=()=>{sound=!sound;localStorage.setItem("alma_sound",sound?"1":"0");syncSettings();beep(600,.05)};
-$("vibeToggle").onclick=()=>{vibe=!vibe;localStorage.setItem("alma_vibe",vibe?"1":"0");syncSettings();buzz(25)};
-$("contrastToggle").onclick=()=>{contrast=!contrast;localStorage.setItem("alma_contrast",contrast?"1":"0");syncSettings()};
-$("resetProgress").onclick=()=>{
-  if(confirm("Reset all Alma Crush progress?")){
-    save({best:0,coins:0,level:1});updateHome();syncSettings();alert("Progress reset.");
-  }
-};
-
-updateHome();syncSettings();
-})();
+const colors=[
+{name:"Red",hex:"#ff4d67"},{name:"Blue",hex:"#4f7cff"},{name:"Green",hex:"#2ed27b"},{name:"Purple",hex:"#965cff"},
+{name:"Pink",hex:"#f45bb0"},{name:"Cyan",hex:"#27c9e8"},{name:"Orange",hex:"#ff9d43"},{name:"Yellow",hex:"#ffd447"}];
+let score=0,combo=0,level=1,lives=3,time=20,target=0,running=false,paused=false,sound=true,timer=null,audioCtx=null;
+const size=16,$=id=>document.getElementById(id),rnd=n=>Math.floor(Math.random()*n);
+function beep(freq,duration=.07){if(!sound)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.frequency.value=freq;o.type="sine";g.gain.value=.035;o.connect(g);g.connect(audioCtx.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.stop(audioCtx.currentTime+duration)}catch(e){}}
+function updateStats(){$("score").textContent=score;$("combo").textContent=combo;$("level").textContent=level;$("lives").textContent=lives;$("bar").style.width=Math.max(0,time/20*100)+"%"}
+function shuffle(a){for(let i=a.length-1;i>0;i--){let j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]]}}
+function makeRound(){if(!running)return;target=rnd(colors.length);$("targetName").textContent=colors[target].name;$("targetDot").style.background=colors[target].hex;
+let correct=rnd(size),arr=[];for(let i=0;i<size;i++){if(i===correct)arr.push(target);else{let x=rnd(colors.length-1);if(x>=target)x++;arr.push(x)}}shuffle(arr);
+const board=$("board");board.innerHTML="";arr.forEach(c=>{let b=document.createElement("button");b.className="tile";b.dataset.color=c;b.style.background=colors[c].hex;b.setAttribute("aria-label",colors[c].name);b.onclick=()=>choose(b,c);board.appendChild(b)});
+time=Math.max(7,20-(level-1)*1.2);updateStats()}
+function choose(btn,c){if(!running||paused)return;if(c===target){combo++;let gained=10+combo*2+level*3;score+=gained;btn.classList.add("correct");$("message").textContent="Correct! +"+gained+" points";beep(620,.08);if(combo%5===0){level++;beep(880,.12);$("message").textContent="🔥 Level up! Level "+level}setTimeout(makeRound,180)}else{lives--;combo=0;btn.classList.add("wrong");$("message").textContent="Wrong color — try again!";beep(170,.12);if(lives<=0){endGame();return}updateStats()}}
+function tick(){clearInterval(timer);timer=setInterval(()=>{if(!running||paused)return;time-=.1;let max=Math.max(7,20-(level-1)*1.2);$("bar").style.width=Math.max(0,time/max*100)+"%";if(time<=0){lives--;combo=0;if(lives<=0){endGame();return}$("message").textContent="Time's up! A life was lost.";beep(160,.12);makeRound()}},100)}
+function startGame(){score=0;combo=0;level=1;lives=3;running=true;paused=false;$("overlay").style.display="none";$("pauseBtn").textContent="Ⅱ";$("message").textContent="Find the matching color!";makeRound();tick()}
+function endGame(){running=false;clearInterval(timer);$("modalTitle").textContent="Game Over";$("modalScore").textContent=score;$("modalText").textContent="You reached Level "+level+" with a score of "+score+".";$("helpBox").style.display="block";$("modalBtn").textContent="Play Again";$("overlay").style.display="flex";beep(120,.25)}
+function pauseGame(){if(!running)return;paused=!paused;$("pauseBtn").textContent=paused?"▶":"Ⅱ";if(paused){$("modalTitle").textContent="Paused";$("modalScore").textContent=score;$("modalText").textContent="Take a breath, then continue when you're ready.";$("modalBtn").textContent="Continue";$("overlay").style.display="flex"}}
+$("pauseBtn").onclick=()=>{if(paused){paused=false;$("overlay").style.display="none";$("pauseBtn").textContent="Ⅱ";$("message").textContent="Game resumed"}else pauseGame()};
+$("modalBtn").onclick=()=>{if(paused){paused=false;$("overlay").style.display="none";$("pauseBtn").textContent="Ⅱ";return}startGame()};
+$("restartBtn").onclick=startGame;
+$("soundBtn").onclick=()=>{sound=!sound;$("soundBtn").textContent=sound?"🔊 Sound ON":"🔇 Sound OFF";if(sound)beep(650,.07)};
+$("modalText").textContent="A fast color-matching challenge. Find the exact color shown at the top and tap it before time runs out.";
+$("overlay").style.display="flex";updateStats();
 </script>
-</body>
-</html>
+</body></html>
